@@ -5,7 +5,7 @@
 从本质上讲，图形用户界面是向用户图形化**显示**一些信息的应用程序。然后用户可以选择与应用程序**交互**——通常使用某种设备；比如键盘、鼠标或触摸屏。
 
 <div align="center">
-  <img alt="界面显示，用户交互" src="../resources/gui-displays-user-interacts.svg">
+  <img alt="界面显示，用户交互" src="resources/gui-displays-user-interacts.svg">
 </div>
 
 用户交互可能导致应用程序更新并因此显示新信息，这反过来可能导致进一步的用户交互，进而导致进一步的更新...等等。这种快速的反馈循环是产生*交互性*感觉的原因。
@@ -16,7 +16,7 @@
 由于我们有兴趣创建用户界面，让我们仔细看看它们。我们将从一个非常简单的开始：经典的计数器界面。它由什么组成？
 
 <div align="center">
-  <img alt="经典计数器界面" src="../resources/counter-interface.svg">
+  <img alt="经典计数器界面" src="resources/counter-interface.svg">
 </div>
 
 正如我们可以清楚地看到的，这个界面有三个视觉上不同的元素：两个按钮中间有一个数字。我们将用户界面的这些视觉上不同的元素称为**组件**或**元素**。
@@ -26,7 +26,7 @@
 我们也可以说用户界面是*有状态的*——有一些**状态**在交互之间持续存在。计数器界面显示一个表示计数器值的数字。显示的数字将根据我们按按钮的次数而改变。按一次增加按钮将导致与按两次不同的显示值。
 
 <div align="center">
-  <img alt="剖析的计数器界面" src="../resources/counter-interface-annotated.svg">
+  <img alt="剖析的计数器界面" src="resources/counter-interface-annotated.svg">
 </div>
 
 ## GUI 三要素
@@ -41,7 +41,7 @@
 **组件**在用户与它们交互时产生**交互**。这些**交互**然后改变界面的**状态**。改变的**状态**传播并决定必须显示的新**组件**。这些新**组件**然后可能产生新的**交互**，这可以再次改变**状态**...等等。
 
 <div align="center">
-  <img alt="GUI 三要素" src="../resources/the-gui-trinity.svg">
+  <img alt="GUI 三要素" src="resources/the-gui-trinity.svg">
 </div>
 
 这些思想及其连接构成了用户界面的基本架构。因此，创建用户界面必然包括定义这些**组件**、**交互**和**状态**；以及它们之间的连接。
@@ -60,7 +60,7 @@
 所有这些意味着，当我们创建特定的用户界面时，我们不想专注于实现每个熟悉的组件及其行为。相反，我们想要利用组件作为可重用的构建块——独立于我们的应用程序并由某个库提供——同时将我们的重点放在基本架构的应用程序特定部分：状态、交互、交互如何改变状态，以及状态如何决定组件。
 
 <div align="center">
-  <img alt="GUI 的应用程序特定部分" src="../resources/the-gui-trinity-focused.svg">
+  <img alt="GUI 的应用程序特定部分" src="resources/the-gui-trinity-focused.svg">
 </div>
 
 [用户体验]: https://en.wikipedia.org/wiki/User_experience
@@ -84,7 +84,7 @@ Elm 架构为其基本部分使用不同的——如果不是更精确的——�
 这些是不同的名称，但它们指向我们已经发现的完全相同的基本思想，因此可以互换使用。
 
 <div align="center">
-  <img alt="Elm 架构" src="../resources/the-elm-architecture.svg">
+  <img alt="Elm 架构" src="resources/the-elm-architecture.svg">
 </div>
 
 > 注意：在 iced 中，**状态**和**消息**这些名称比**模型**和**交互**使用得更频繁。

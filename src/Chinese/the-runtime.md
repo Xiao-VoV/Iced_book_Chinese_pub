@@ -12,7 +12,7 @@
 产生**消息**、执行**更新逻辑**和运行我们的**视图逻辑**。
 
 <div align="center">
-  <img alt="运行时" src="../resources/the-runtime.svg">
+  <img alt="运行时" src="resources/the-runtime.svg">
 </div>
 
 > 想象运行时的另一种方式是想象一个缺少四个基本部分的巨大引擎。我们的工作是

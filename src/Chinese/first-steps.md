@@ -9,7 +9,7 @@ iced 采用 Elm 架构作为构建交互式应用程序最自然的方法。
 在 Rust 中构建它，同时利用 Elm 架构。
 
 <div align="center">
-  <img alt="经典计数器界面" src="../resources/counter-interface-annotated.svg">
+  <img alt="经典计数器界面" src="resources/counter-interface-annotated.svg">
 </div>
 
 ## 状态
@@ -136,7 +136,7 @@ Elm 架构正确地拥抱了用户界面每个部分的不同性质——将**�
 产生必须向用户显示的用户界面的视觉表示。
 
 <div align="center" class="right">
-  <img alt="经典计数器界面" src="../resources/counter-interface.svg" width="50%">
+  <img alt="经典计数器界面" src="resources/counter-interface.svg" width="50%">
 </div>
 
 正如我们已经学到的，这种视觉表示由组件组成——界面的视觉上不同的单元。大多数
@@ -340,7 +340,7 @@ impl Counter {
 让我们内联所有内容：
 
 <div align="center" class="right">
-  <img alt="经典计数器界面" src="../resources/counter-interface.svg" width="50%">
+  <img alt="经典计数器界面" src="resources/counter-interface.svg" width="50%">
 </div>
 
 ```rust,ignore

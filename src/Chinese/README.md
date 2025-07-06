@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="iced 标志" src="../resources/logo.svg" width="140">
+  <img alt="iced 标志" src="resources/logo.svg" width="140">
 </div>
 
 # 介绍
