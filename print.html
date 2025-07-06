@@ -170,7 +170,7 @@
                 <div id="content" class="content">
                     <main>
                         <div align="center">
-  <img alt="iced 标志" src="../resources/logo.svg" width="140">
+  <img alt="iced 标志" src="resources/logo.svg" width="140">
 </div>
 <h1 id="介绍"><a class="header" href="#介绍">介绍</a></h1>
 <p><a href="https://iced.rs">iced</a> 是一个用于 <a href="https://rust-lang.org">Rust</a> 的跨平台 GUI 库。它受到 <a href="https://elm-lang.org">Elm</a> 的启发，Elm 是一种用于构建 Web 应用程序的令人愉悦的函数式语言。</p>
@@ -189,7 +189,7 @@
 您可以在手机、计算机和大多数交互式电子设备上找到它们。事实上，您很可能正在使用一个来阅读这本书！</p>
 <p>从本质上讲，图形用户界面是向用户图形化<strong>显示</strong>一些信息的应用程序。然后用户可以选择与应用程序<strong>交互</strong>——通常使用某种设备；比如键盘、鼠标或触摸屏。</p>
 <div align="center">
-  <img alt="界面显示，用户交互" src="../resources/gui-displays-user-interacts.svg">
+  <img alt="界面显示，用户交互" src="resources/gui-displays-user-interacts.svg">
 </div>
 <p>用户交互可能导致应用程序更新并因此显示新信息，这反过来可能导致进一步的用户交互，进而导致进一步的更新…等等。这种快速的反馈循环是产生<em>交互性</em>感觉的原因。</p>
 <blockquote>
@@ -198,13 +198,13 @@
 <h2 id="剖析界面"><a class="header" href="#剖析界面">剖析界面</a></h2>
 <p>由于我们有兴趣创建用户界面，让我们仔细看看它们。我们将从一个非常简单的开始：经典的计数器界面。它由什么组成？</p>
 <div align="center">
-  <img alt="经典计数器界面" src="../resources/counter-interface.svg">
+  <img alt="经典计数器界面" src="resources/counter-interface.svg">
 </div>
 <p>正如我们可以清楚地看到的，这个界面有三个视觉上不同的元素：两个按钮中间有一个数字。我们将用户界面的这些视觉上不同的元素称为<strong>组件</strong>或<strong>元素</strong>。</p>
 <p>一些<strong>组件</strong>可能是交互式的，比如按钮。在计数器界面中，按钮可以用来触发某些<strong>交互</strong>。具体来说，顶部的按钮可以用来增加计数器值，而底部的按钮可以用来减少它。</p>
 <p>我们也可以说用户界面是<em>有状态的</em>——有一些<strong>状态</strong>在交互之间持续存在。计数器界面显示一个表示计数器值的数字。显示的数字将根据我们按按钮的次数而改变。按一次增加按钮将导致与按两次不同的显示值。</p>
 <div align="center">
-  <img alt="剖析的计数器界面" src="../resources/counter-interface-annotated.svg">
+  <img alt="剖析的计数器界面" src="resources/counter-interface-annotated.svg">
 </div>
 <h2 id="gui-三要素"><a class="header" href="#gui-三要素">GUI 三要素</a></h2>
 <p>我们的快速剖析成功识别了用户界面中的三个基本思想：</p>
@@ -216,7 +216,7 @@
 <p>这些思想相互连接，形成另一个反馈循环！</p>
 <p><strong>组件</strong>在用户与它们交互时产生<strong>交互</strong>。这些<strong>交互</strong>然后改变界面的<strong>状态</strong>。改变的<strong>状态</strong>传播并决定必须显示的新<strong>组件</strong>。这些新<strong>组件</strong>然后可能产生新的<strong>交互</strong>，这可以再次改变<strong>状态</strong>…等等。</p>
 <div align="center">
-  <img alt="GUI 三要素" src="../resources/the-gui-trinity.svg">
+  <img alt="GUI 三要素" src="resources/the-gui-trinity.svg">
 </div>
 <p>这些思想及其连接构成了用户界面的基本架构。因此，创建用户界面必然包括定义这些<strong>组件</strong>、<strong>交互</strong>和<strong>状态</strong>；以及它们之间的连接。</p>
 <h2 id="不同的思想不同的性质"><a class="header" href="#不同的思想不同的性质">不同的思想，不同的性质</a></h2>
@@ -227,7 +227,7 @@
 <p>虽然组件通常非常可重用；但由应用程序状态及其交互决定的特定组件配置是非常特定于应用程序的。按钮是通用的；但具有“+“标签并在按下时导致值增加的按钮是非常特定的。</p>
 <p>所有这些意味着，当我们创建特定的用户界面时，我们不想专注于实现每个熟悉的组件及其行为。相反，我们想要利用组件作为可重用的构建块——独立于我们的应用程序并由某个库提供——同时将我们的重点放在基本架构的应用程序特定部分：状态、交互、交互如何改变状态，以及状态如何决定组件。</p>
 <div align="center">
-  <img alt="GUI 的应用程序特定部分" src="../resources/the-gui-trinity-focused.svg">
+  <img alt="GUI 的应用程序特定部分" src="resources/the-gui-trinity-focused.svg">
 </div>
 <h2 id="elm-架构"><a class="header" href="#elm-架构">Elm 架构</a></h2>
 <p>事实证明，界面架构的四个应用程序特定部分也是<a href="https://guide.elm-lang.org/architecture/">Elm 架构</a>的四个基本思想。</p>
@@ -245,7 +245,7 @@
 </ul>
 <p>这些是不同的名称，但它们指向我们已经发现的完全相同的基本思想，因此可以互换使用。</p>
 <div align="center">
-  <img alt="Elm 架构" src="../resources/the-elm-architecture.svg">
+  <img alt="Elm 架构" src="resources/the-elm-architecture.svg">
 </div>
 <blockquote>
 <p>注意：在 iced 中，<strong>状态</strong>和<strong>消息</strong>这些名称比<strong>模型</strong>和<strong>交互</strong>使用得更频繁。</p>
@@ -258,7 +258,7 @@
 <p>在上一章中，我们剖析并研究了经典的计数器界面。让我们尝试
 在 Rust 中构建它，同时利用 Elm 架构。</p>
 <div align="center">
-  <img alt="经典计数器界面" src="../resources/counter-interface-annotated.svg">
+  <img alt="经典计数器界面" src="resources/counter-interface-annotated.svg">
 </div>
 <h2 id="状态"><a class="header" href="#状态">状态</a></h2>
 <p>让我们从<strong>状态</strong>开始——应用程序的底层数据。</p>
@@ -340,7 +340,7 @@ fn it_counts_properly() {
 <p>这就是魔法发生的地方！在视图逻辑中，我们将应用程序的状态及其可能的交互结合起来
 产生必须向用户显示的用户界面的视觉表示。</p>
 <div align="center" class="right">
-  <img alt="经典计数器界面" src="../resources/counter-interface.svg" width="50%">
+  <img alt="经典计数器界面" src="resources/counter-interface.svg" width="50%">
 </div>
 <p>正如我们已经学到的，这种视觉表示由组件组成——界面的视觉上不同的单元。大多数
 组件不是特定于应用程序的，它们可以被抽象并打包到可重用的库中。这些库通常
@@ -481,7 +481,7 @@ impl Counter {
 <p>嗯…就是这样！我们的视图逻辑完成了！但等等…现在有点冗长。由于这是一个如此简单的界面，
 让我们内联所有内容：</p>
 <div align="center" class="right">
-  <img alt="经典计数器界面" src="../resources/counter-interface.svg" width="50%">
+  <img alt="经典计数器界面" src="resources/counter-interface.svg" width="50%">
 </div>
 <pre><code class="language-rust ignore">use iced::widget::{button, column, text, Column};
 
@@ -508,7 +508,7 @@ impl Counter {
 <p>这个_某些东西_被称为<strong>运行时</strong>。您可以将其视为用户界面反馈循环发生的环境。运行时负责循环的每个部分：初始化<strong>状态</strong>、
 产生<strong>消息</strong>、执行<strong>更新逻辑</strong>和运行我们的<strong>视图逻辑</strong>。</p>
 <div align="center">
-  <img alt="运行时" src="../resources/the-runtime.svg">
+  <img alt="运行时" src="resources/the-runtime.svg">
 </div>
 <blockquote>
 <p>想象运行时的另一种方式是想象一个缺少四个基本部分的巨大引擎。我们的工作是
