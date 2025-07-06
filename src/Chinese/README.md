@@ -5,7 +5,7 @@
 # 介绍
 [iced] 是一个用于 [Rust] 的跨平台 GUI 库。它受到 [Elm] 的启发，Elm 是一种用于构建 Web 应用程序的令人愉悦的函数式语言。
 
-作为一个 GUI 库，iced 帮助您为 Rust 应用程序构建*[图形用户界面]*。
+作为一个 GUI 库，iced 帮助您为 Rust 应用程序构建[图形用户界面]。
 
 iced 强烈专注于**简洁性**和**类型安全**。因此，iced 试图提供简单的构建块，这些构建块可以通过强类型组合在一起，以减少**运行时错误**的可能性。
 
@@ -22,3 +22,5 @@ iced 强烈专注于**简洁性**和**类型安全**。因此，iced 试图提�
 [Elm]: https://elm-lang.org
 [图形用户界面]: https://en.wikipedia.org/wiki/Graphical_user_interface
 [官方 Rust 书籍]: https://doc.rust-lang.org/book/
+
+本文档是iced文档的中文翻译，由Claude辅助翻译，部分章节正在校对中，有任何问题欢迎指正。
