@@ -170,166 +170,131 @@
                 <div id="content" class="content">
                     <main>
                         <div align="center">
-  <img alt="The iced logo" src="resources/logo.svg" width="140">
+  <img alt="iced 标志" src="../resources/logo.svg" width="140">
 </div>
-<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p><a href="https://iced.rs">iced</a> is a cross-platform GUI library for <a href="https://rust-lang.org">Rust</a>. It is inspired by <a href="https://elm-lang.org">Elm</a>, a delightful functional language for building web applications.</p>
-<p>As a GUI library, iced helps you build <em><a href="https://en.wikipedia.org/wiki/Graphical_user_interface">graphical user interfaces</a></em> for your Rust applications.</p>
-<p>iced is strongly focused on <strong>simplicity</strong> and <strong>type-safety</strong>. As a result, iced tries to provide simple building blocks that can be put together with strong typing to reduce the chance of <strong>runtime errors</strong>.</p>
-<p>This book will:</p>
+<h1 id="介绍"><a class="header" href="#介绍">介绍</a></h1>
+<p><a href="https://iced.rs">iced</a> 是一个用于 <a href="https://rust-lang.org">Rust</a> 的跨平台 GUI 库。它受到 <a href="https://elm-lang.org">Elm</a> 的启发，Elm 是一种用于构建 Web 应用程序的令人愉悦的函数式语言。</p>
+<p>作为一个 GUI 库，iced 帮助您为 Rust 应用程序构建*<a href="https://en.wikipedia.org/wiki/Graphical_user_interface">图形用户界面</a>*。</p>
+<p>iced 强烈专注于<strong>简洁性</strong>和<strong>类型安全</strong>。因此，iced 试图提供简单的构建块，这些构建块可以通过强类型组合在一起，以减少<strong>运行时错误</strong>的可能性。</p>
+<p>本书将：</p>
 <ul>
-<li>Introduce you to the fundamental ideas of iced.</li>
-<li>Teach you how to build interactive applications with iced.</li>
-<li>Emphasize principles to scale and grow iced applications.</li>
+<li>向您介绍 iced 的基本思想。</li>
+<li>教您如何使用 iced 构建交互式应用程序。</li>
+<li>强调扩展和发展 iced 应用程序的原则。</li>
 </ul>
-<p>Before proceeding, you should have some basic familiarity with Rust. If you are new to Rust or feel lost at some point, I recommend you to read <a href="https://doc.rust-lang.org/book/">the official Rust book</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
-<p>Let’s start from the basics! You are probably very familiar with graphical user interfaces already.
-You can find them on your phone, computer, and most interactive electronic devices. In fact, you are
-most likely reading this book using one!</p>
-<p>At their essence, graphical user interfaces are applications that <strong>display</strong> some information graphically
-to a user. This user can then choose to <strong>interact</strong> with the application—normally using some kind of device;
-like a keyboard, mouse, or touchscreen.</p>
+<p>在继续之前，您应该对 Rust 有一些基本的了解。如果您是 Rust 新手或在某些时候感到困惑，我建议您阅读<a href="https://doc.rust-lang.org/book/">官方 Rust 书籍</a>。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="架构"><a class="header" href="#架构">架构</a></h1>
+<p>让我们从基础开始！您可能已经非常熟悉图形用户界面了。
+您可以在手机、计算机和大多数交互式电子设备上找到它们。事实上，您很可能正在使用一个来阅读这本书！</p>
+<p>从本质上讲，图形用户界面是向用户图形化<strong>显示</strong>一些信息的应用程序。然后用户可以选择与应用程序<strong>交互</strong>——通常使用某种设备；比如键盘、鼠标或触摸屏。</p>
 <div align="center">
-  <img alt="Interface displays, user interacts" src="resources/gui-displays-user-interacts.svg">
+  <img alt="界面显示，用户交互" src="../resources/gui-displays-user-interacts.svg">
 </div>
-<p>The user interactions may cause the application to update and display new information as a result, which in turn
-may cause further user interactions, which in turn cause further updates… And so on. This quick feedback loop
-is what causes the feeling of <em>interactivity</em>.</p>
+<p>用户交互可能导致应用程序更新并因此显示新信息，这反过来可能导致进一步的用户交互，进而导致进一步的更新…等等。这种快速的反馈循环是产生<em>交互性</em>感觉的原因。</p>
 <blockquote>
-<p>Note: In this book, we will refer to graphical user interfaces as <strong>GUIs</strong>, <strong>UIs</strong>, <strong>user interfaces</strong>, or simply
-<strong>interfaces</strong>. Technically, not all interfaces are graphical nor user-oriented; but, given the context of this
-book, we will use all of these terms interchangeably.</p>
+<p>注意：在本书中，我们将图形用户界面称为 <strong>GUI</strong>、<strong>UI</strong>、<strong>用户界面</strong>或简称<strong>界面</strong>。从技术上讲，并非所有界面都是图形化的或面向用户的；但是，考虑到本书的上下文，我们将交替使用所有这些术语。</p>
 </blockquote>
-<h2 id="dissecting-an-interface"><a class="header" href="#dissecting-an-interface">Dissecting an Interface</a></h2>
-<p>Since we are interested in creating user interfaces, let’s take a closer look at them. We will start with a very
-simple one: the classical counter interface. What is it made of?</p>
+<h2 id="剖析界面"><a class="header" href="#剖析界面">剖析界面</a></h2>
+<p>由于我们有兴趣创建用户界面，让我们仔细看看它们。我们将从一个非常简单的开始：经典的计数器界面。它由什么组成？</p>
 <div align="center">
-  <img alt="A classical counter interface" src="resources/counter-interface.svg">
+  <img alt="经典计数器界面" src="../resources/counter-interface.svg">
 </div>
-<p>As we can clearly see, this interface has three visibly distinct elements: two buttons with a number in between.
-We refer to these visibly distinct elements of a user interface as <strong>widgets</strong> or <strong>elements</strong>.</p>
-<p>Some <strong>widgets</strong> may be interactive, like a button. In the counter interface, the buttons can be used to trigger
-certain <strong>interactions</strong>. Specifically, the button at the top can be used to increment the counter value, while the
-button at the bottom can be used to decrement it.</p>
-<p>We can also say that user interfaces are <em>stateful</em>—there is some <strong>state</strong> that persists between interactions.
-The counter interface displays a number representing the counter value. The number displayed will change depending on
-the amount of times we press the buttons. Pressing the increment button once will result in a different displayed value
-compared to pressing it twice.</p>
+<p>正如我们可以清楚地看到的，这个界面有三个视觉上不同的元素：两个按钮中间有一个数字。我们将用户界面的这些视觉上不同的元素称为<strong>组件</strong>或<strong>元素</strong>。</p>
+<p>一些<strong>组件</strong>可能是交互式的，比如按钮。在计数器界面中，按钮可以用来触发某些<strong>交互</strong>。具体来说，顶部的按钮可以用来增加计数器值，而底部的按钮可以用来减少它。</p>
+<p>我们也可以说用户界面是<em>有状态的</em>——有一些<strong>状态</strong>在交互之间持续存在。计数器界面显示一个表示计数器值的数字。显示的数字将根据我们按按钮的次数而改变。按一次增加按钮将导致与按两次不同的显示值。</p>
 <div align="center">
-  <img alt="A dissected counter interface" src="resources/counter-interface-annotated.svg">
+  <img alt="剖析的计数器界面" src="../resources/counter-interface-annotated.svg">
 </div>
-<h2 id="the-gui-trinity"><a class="header" href="#the-gui-trinity">The GUI Trinity</a></h2>
-<p>Our quick dissection has successfully identified three foundational ideas in a user interface:</p>
+<h2 id="gui-三要素"><a class="header" href="#gui-三要素">GUI 三要素</a></h2>
+<p>我们的快速剖析成功识别了用户界面中的三个基本思想：</p>
 <ul>
-<li><strong>Widgets</strong> — the distinct visual elements of an interface.</li>
-<li><strong>Interactions</strong> — the actions that may be triggered by some widgets.</li>
-<li><strong>State</strong> — the underlying condition or information of an interface.</li>
+<li><strong>组件</strong> — 界面的不同视觉元素。</li>
+<li><strong>交互</strong> — 可能由某些组件触发的动作。</li>
+<li><strong>状态</strong> — 界面的底层条件或信息。</li>
 </ul>
-<p>These ideas are connected to each other, forming another feedback loop!</p>
-<p><strong>Widgets</strong> produce <strong>interactions</strong> when a user interacts with them. These <strong>interactions</strong> then change the <strong>state</strong>
-of the interface. The changed <strong>state</strong> propagates and dictates the new <strong>widgets</strong> that must be displayed. These new
-<strong>widgets</strong> may then produce new <strong>interactions</strong>, which can change the <strong>state</strong> again… And so on.</p>
+<p>这些思想相互连接，形成另一个反馈循环！</p>
+<p><strong>组件</strong>在用户与它们交互时产生<strong>交互</strong>。这些<strong>交互</strong>然后改变界面的<strong>状态</strong>。改变的<strong>状态</strong>传播并决定必须显示的新<strong>组件</strong>。这些新<strong>组件</strong>然后可能产生新的<strong>交互</strong>，这可以再次改变<strong>状态</strong>…等等。</p>
 <div align="center">
-  <img alt="The GUI trinity" src="resources/the-gui-trinity.svg">
+  <img alt="GUI 三要素" src="../resources/the-gui-trinity.svg">
 </div>
-<p>These ideas and their connections make up the fundamental architecture of a user interface. Therefore, creating a user
-interface must inevitably consist in defining these <strong>widgets</strong>, <strong>interactions</strong>, and <strong>state</strong>; as well as the connections
-between them.</p>
-<h2 id="different-ideas-different-nature"><a class="header" href="#different-ideas-different-nature">Different Ideas, Different Nature</a></h2>
-<p>The three foundational ideas of an interface differ quite a bit when it comes to reusability.</p>
-<p>The state and the interactions of an interface are very specific to the application and its purpose. If I tell you that
-I have an interface with a numeric value and increment and decrement interactions, you will very easily
-guess I am talking about a counter interface.</p>
-<p>However, if I tell you I have an interface with two buttons and a number… It’s quite trickier for you to guess the kind
-of interface I am talking about. It could be anything!</p>
-<p>This is because widgets are generally very generic and, therefore, more reusable. Most interfaces display a combination of
-familiar widgets—like buttons and numbers. In fact, users expect familiar widgets to always behave a certain way. If they
-don’t behave properly, the interface will be unintuitive and have poor <a href="https://en.wikipedia.org/wiki/User_experience">user experience</a>.</p>
-<p>While widgets are generally very reusable; the specific widget configuration dictated by the application state and its
-interactions is very application-specific. A button is generic; but a button that has a “+” label and causes a value
-increment when pressed is very specific.</p>
-<p>All of this means that, when we are creating a specific user interface, we don’t want to focus on implementing every
-familiar widget and its behavior. Instead, we want to leverage widgets as reusable building blocks—independent of our
-application and provided by some library—while placing our focus on the application-specific parts of the fundamental
-architecture: state, interactions, how the interactions change the state, and how the state dictates the widgets.</p>
+<p>这些思想及其连接构成了用户界面的基本架构。因此，创建用户界面必然包括定义这些<strong>组件</strong>、<strong>交互</strong>和<strong>状态</strong>；以及它们之间的连接。</p>
+<h2 id="不同的思想不同的性质"><a class="header" href="#不同的思想不同的性质">不同的思想，不同的性质</a></h2>
+<p>界面的三个基本思想在可重用性方面差异很大。</p>
+<p>界面的状态和交互对应用程序及其目的非常特定。如果我告诉您我有一个具有数值和增加和减少交互的界面，您很容易猜到我在谈论计数器界面。</p>
+<p>然而，如果我告诉您我有一个具有两个按钮和一个数字的界面…您猜测我在谈论什么样的界面就相当困难了。它可能是任何东西！</p>
+<p>这是因为组件通常非常通用，因此更可重用。大多数界面显示熟悉组件的组合——比如按钮和数字。事实上，用户期望熟悉的组件总是以某种方式行为。如果它们行为不当，界面将不直观并具有糟糕的<a href="https://en.wikipedia.org/wiki/User_experience">用户体验</a>。</p>
+<p>虽然组件通常非常可重用；但由应用程序状态及其交互决定的特定组件配置是非常特定于应用程序的。按钮是通用的；但具有“+“标签并在按下时导致值增加的按钮是非常特定的。</p>
+<p>所有这些意味着，当我们创建特定的用户界面时，我们不想专注于实现每个熟悉的组件及其行为。相反，我们想要利用组件作为可重用的构建块——独立于我们的应用程序并由某个库提供——同时将我们的重点放在基本架构的应用程序特定部分：状态、交互、交互如何改变状态，以及状态如何决定组件。</p>
 <div align="center">
-  <img alt="The application-specific parts of a GUI" src="resources/the-gui-trinity-focused.svg">
+  <img alt="GUI 的应用程序特定部分" src="../resources/the-gui-trinity-focused.svg">
 </div>
-<h2 id="the-elm-architecture"><a class="header" href="#the-elm-architecture">The Elm Architecture</a></h2>
-<p>It turns out that the four application-specific parts of the architecture of an interface are also the four foundational
-ideas of <a href="https://guide.elm-lang.org/architecture/">The Elm Architecture</a>.</p>
+<h2 id="elm-架构"><a class="header" href="#elm-架构">Elm 架构</a></h2>
+<p>事实证明，界面架构的四个应用程序特定部分也是<a href="https://guide.elm-lang.org/architecture/">Elm 架构</a>的四个基本思想。</p>
 <blockquote>
-<p>The Elm Architecture is a pattern for architecting interactive programs that emerges naturally in <a href="https://elm-lang.org/">Elm</a>, a delightful
-purely functional programming language for reliable web applications.</p>
-<p>Patterns and ideas that emerge in purely functional programming languages tend to work very well in Rust
-because they leverage immutability and <a href="https://en.wikipedia.org/wiki/Referential_transparency">referential transparency</a>—both very desirable properties that not only
-make code easy to reason about, but also play nicely with the borrow checker.</p>
-<p>Furthermore, The Elm Architecture not only emerges naturally in Elm, but also when simply dissecting user
-interfaces and formalizing their inner workings; like we just did in this chapter.</p>
+<p>Elm 架构是一种用于构建交互式程序的模式，它在 <a href="https://elm-lang.org/">Elm</a> 中自然出现，Elm 是一种用于可靠 Web 应用程序的令人愉悦的纯函数式编程语言。</p>
+<p>在纯函数式编程语言中出现的模式和思想在 Rust 中往往工作得很好，因为它们利用了不可变性和<a href="https://en.wikipedia.org/wiki/Referential_transparency">引用透明性</a>——这两个非常理想的属性不仅使代码易于推理，而且与借用检查器配合得很好。</p>
+<p>此外，Elm 架构不仅在 Elm 中自然出现，而且在简单地剖析用户界面并形式化其内部工作时也会出现；就像我们刚才在本章中所做的那样。</p>
 </blockquote>
-<p>The Elm Architecture uses a different—if not more precise—nomenclature for its fundamental parts:</p>
+<p>Elm 架构为其基本部分使用不同的——如果不是更精确的——命名法：</p>
 <ul>
-<li><strong>Model</strong> — the state of the application.</li>
-<li><strong>Messages</strong> — the interactions of the application.</li>
-<li><strong>Update logic</strong> — how the messages change the state.</li>
-<li><strong>View logic</strong> — how the state dictates the widgets.</li>
+<li><strong>模型</strong> — 应用程序的状态。</li>
+<li><strong>消息</strong> — 应用程序的交互。</li>
+<li><strong>更新逻辑</strong> — 消息如何改变状态。</li>
+<li><strong>视图逻辑</strong> — 状态如何决定组件。</li>
 </ul>
-<p>These are different names, but they point to the same exact fundamental ideas we have already discovered and,
-therefore, can be used interchangeably.</p>
+<p>这些是不同的名称，但它们指向我们已经发现的完全相同的基本思想，因此可以互换使用。</p>
 <div align="center">
-  <img alt="The Elm Architecture" src="resources/the-elm-architecture.svg">
+  <img alt="Elm 架构" src="../resources/the-elm-architecture.svg">
 </div>
 <blockquote>
-<p>Note: In iced, the names <strong>state</strong> and <strong>messages</strong> are used more often than <strong>model</strong> and
-<strong>interactions</strong>, respectively.</p>
+<p>注意：在 iced 中，<strong>状态</strong>和<strong>消息</strong>这些名称比<strong>模型</strong>和<strong>交互</strong>使用得更频繁。</p>
 </blockquote>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="first-steps"><a class="header" href="#first-steps">First Steps</a></h1>
-<p>But enough with the theory. It’s about time we start writing some code!</p>
-<p>iced embraces The Elm Architecture as the most natural approach for architecting interactive applications.
-Therefore, when using iced, we will be dealing with the four main ideas we introduced in the previous chapter:
-<strong>state</strong>, <strong>messages</strong>, <strong>update logic</strong>, and <strong>view logic</strong>.</p>
-<p>In the previous chapter, we dissected and studied the classical counter interface. Let’s try to
-build it in Rust while leveraging The Elm Architecture.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="第一步"><a class="header" href="#第一步">第一步</a></h1>
+<p>但是理论已经够了。是时候开始写一些代码了！</p>
+<p>iced 采用 Elm 架构作为构建交互式应用程序最自然的方法。
+因此，在使用 iced 时，我们将处理上一章中介绍的四个主要思想：
+<strong>状态</strong>、<strong>消息</strong>、<strong>更新逻辑</strong>和<strong>视图逻辑</strong>。</p>
+<p>在上一章中，我们剖析并研究了经典的计数器界面。让我们尝试
+在 Rust 中构建它，同时利用 Elm 架构。</p>
 <div align="center">
-  <img alt="A classical counter interface" src="resources/counter-interface-annotated.svg">
+  <img alt="经典计数器界面" src="../resources/counter-interface-annotated.svg">
 </div>
-<h2 id="state"><a class="header" href="#state">State</a></h2>
-<p>Let’s start with the <strong>state</strong>—the underlying data of the application.</p>
-<p>In Rust, given the ownership and borrowing rules, it is extremely important to think carefully about the data model
-of your application.</p>
+<h2 id="状态"><a class="header" href="#状态">状态</a></h2>
+<p>让我们从<strong>状态</strong>开始——应用程序的底层数据。</p>
+<p>在 Rust 中，考虑到所有权和借用规则，仔细思考应用程序的数据模型
+是极其重要的。</p>
 <blockquote>
-<p>I encourage you to always start by pondering about the data of your application and
-its different states—not only those that are possible, but also those that must be impossible. Then try to leverage
-the type system as much as you can to <em><a href="https://www.youtube.com/watch?v=IcgmSRJHu_8">Make Impossible States Impossible</a></em>.</p>
+<p>我鼓励您总是从思考应用程序的数据及其
+不同状态开始——不仅是那些可能的，还有那些必须不可能的。然后尽可能多地利用
+类型系统来_<a href="https://www.youtube.com/watch?v=IcgmSRJHu_8">使不可能的状态变得不可能</a>_。</p>
 </blockquote>
-<p>For our counter interface, all we need is a counter value. Since we have both increment and decrement interactions,
-the number could potentially be negative. This means we need a signed integer.</p>
-<p>Also, we know some users are crazy and they may want to count a lot of things. Let’s give them 64 bits to play with:</p>
+<p>对于我们的计数器界面，我们只需要一个计数器值。由于我们有增加和减少交互，
+数字可能是负数。这意味着我们需要一个有符号整数。</p>
+<p>另外，我们知道一些用户很疯狂，他们可能想要计算很多东西。让我们给他们 64 位来玩：</p>
 <pre><code class="language-rust">struct Counter {
     value: i64,
 }</code></pre>
-<p>If a crazy user counted 1000 things every second, it would take them ~300 million years to run out of numbers.
-Let’s hope that’s enough.</p>
-<h2 id="messages"><a class="header" href="#messages">Messages</a></h2>
-<p>Next, we need to define our <strong>messages</strong>—the interactions of the application.</p>
-<p>Our counter interface has two interactions: <strong>increment</strong> and <strong>decrement</strong>. Technically, we could use a simple boolean to
-encode these interactions: <code>true</code> for increment and <code>false</code> for decrement, for instance.</p>
-<p>But… we can do better in Rust! Interactions are mutually exclusive—when we have an interaction, what we really have is one
-value of a possible set of values. It turns out that Rust has the perfect data type for modeling this kind of idea: the <em>enum</em>.</p>
-<p>Thus, we can define our messages like this:</p>
+<p>如果一个疯狂的用户每秒计算 1000 个东西，他们需要大约 3 亿年才能用完数字。
+希望这就足够了。</p>
+<h2 id="消息"><a class="header" href="#消息">消息</a></h2>
+<p>接下来，我们需要定义我们的<strong>消息</strong>——应用程序的交互。</p>
+<p>我们的计数器界面有两个交互：<strong>增加</strong>和<strong>减少</strong>。从技术上讲，我们可以使用简单的布尔值来
+编码这些交互：例如，<code>true</code> 表示增加，<code>false</code> 表示减少。</p>
+<p>但是…我们在 Rust 中可以做得更好！交互是互斥的——当我们有一个交互时，我们真正拥有的是一个
+可能值集合中的一个值。事实证明，Rust 有完美的数据类型来建模这种思想：<em>枚举</em>。</p>
+<p>因此，我们可以这样定义我们的消息：</p>
 <pre><code class="language-rust">enum Message {
     Increment,
     Decrement,
 }</code></pre>
-<p>Simple enough! This also sets us up for the long-term. If we ever wanted to add additional interactions to our application—like a
-<code>Reset</code> interaction, for instance—we could just introduce additional variants to this type. Enums are very powerful and convenient.</p>
-<h2 id="update-logic"><a class="header" href="#update-logic">Update Logic</a></h2>
-<p>Now, it’s time for our <strong>update logic</strong>—how messages change the state of the application.</p>
-<p>Basically, we need to write some logic that given any message can update any state of the application accordingly. The simplest
-and most idiomatic way to express this logic in Rust is by defining a method named <code>update</code> in our application state.</p>
-<p>For our counter interface, we only need to properly increment or decrement the <code>value</code> of our <code>Counter</code> struct based on the <code>Message</code>
-we just defined:</p>
+<p>足够简单！这也为我们的长期发展做好了准备。如果我们想要向应用程序添加额外的交互——比如
+<code>Reset</code> 交互——我们只需向这个类型引入额外的变体。枚举非常强大和方便。</p>
+<h2 id="更新逻辑"><a class="header" href="#更新逻辑">更新逻辑</a></h2>
+<p>现在，是时候编写我们的<strong>更新逻辑</strong>了——消息如何改变应用程序的状态。</p>
+<p>基本上，我们需要编写一些逻辑，给定任何消息都可以相应地更新应用程序的任何状态。在 Rust 中表达这种逻辑的最简单
+和最惯用的方法是在我们的应用程序状态中定义一个名为 <code>update</code> 的方法。</p>
+<p>对于我们的计数器界面，我们只需要根据我们刚刚定义的 <code>Message</code>
+正确地增加或减少我们 <code>Counter</code> 结构的 <code>value</code>：</p>
 <pre><code class="language-rust ignore">impl Counter {
     fn update(&amp;mut self, message: Message) {
         match message {
@@ -342,16 +307,16 @@ we just defined:</p>
         }
     }
 }</code></pre>
-<p>Great! Now we are ready to process user interactions. For instance, imagine we initialized our counter like this:</p>
+<p>太好了！现在我们准备好处理用户交互了。例如，想象我们这样初始化我们的计数器：</p>
 <pre><code class="language-rust ignore">let mut counter = Counter { value: 0 };</code></pre>
-<p>And let’s say we wanted to simulate a user playing with our interface for a bit—pressing the increment button twice
-and then the decrement button once. We could easily compute the final state of our counter with our <strong>update logic</strong>:</p>
+<p>假设我们想要模拟用户玩我们的界面一会儿——按两次增加按钮
+然后按一次减少按钮。我们可以使用我们的<strong>更新逻辑</strong>轻松计算计数器的最终状态：</p>
 <pre><code class="language-rust ignore">counter.update(Message::Increment);
 counter.update(Message::Increment);
 counter.update(Message::Decrement);</code></pre>
-<p>This would cause our <code>Counter</code> to end up with a <code>value</code> of <code>1</code>:</p>
+<p>这将导致我们的 <code>Counter</code> 最终的 <code>value</code> 为 <code>1</code>：</p>
 <pre><code class="language-rust ignore">assert_eq!(counter.value, 1);</code></pre>
-<p>In fact, we have just written a simple test for our application logic:</p>
+<p>事实上，我们刚刚为我们的应用程序逻辑编写了一个简单的测试：</p>
 <pre><code class="language-rust ignore">#[test]
 fn it_counts_properly() {
     let mut counter = Counter { value: 0 };
@@ -362,162 +327,160 @@ fn it_counts_properly() {
 
     assert_eq!(counter.value, 1);
 }</code></pre>
-<p>Notice how easy this was to write! So far, we are just leveraging very simple Rust concepts. No dependencies in sight!
-You may even be wondering… “Where is the GUI code?!”</p>
-<p>This is one of the main advantages of The Elm Architecture. As we discovered in the previous chapter, widgets are the
-only fundamental idea of an interface that is reusable in nature. All the parts we have defined so far are application-specific
-and, therefore, do not need to know about the UI library at all!</p>
-<p>The Elm Architecture properly embraces the different nature of each part of a user interface—decoupling <strong>state</strong>,
-<strong>messages</strong>, and <strong>update logic</strong> from <strong>widgets</strong> and <strong>view logic</strong>.</p>
-<h2 id="view-logic"><a class="header" href="#view-logic">View Logic</a></h2>
-<p>Finally, the only part left for us to define is our <strong>view logic</strong>—how state dictates the widgets of the application.</p>
-<p>Here is where the magic happens! In view logic, we bring together the state of the application and its possible interactions
-to produce a visual representation of the user interface that must be displayed to the user.</p>
+<p>注意这写起来多么容易！到目前为止，我们只是利用了非常简单的 Rust 概念。没有依赖项！
+您甚至可能想知道…“GUI 代码在哪里？！”</p>
+<p>这是 Elm 架构的主要优势之一。正如我们在上一章中发现的，组件是
+界面中唯一本质上可重用的基本思想。到目前为止我们定义的所有部分都是特定于应用程序的，
+因此根本不需要了解 UI 库！</p>
+<p>Elm 架构正确地拥抱了用户界面每个部分的不同性质——将<strong>状态</strong>、
+<strong>消息</strong>和<strong>更新逻辑</strong>与<strong>组件</strong>和<strong>视图逻辑</strong>解耦。</p>
+<h2 id="视图逻辑"><a class="header" href="#视图逻辑">视图逻辑</a></h2>
+<p>最后，我们需要定义的唯一部分是我们的<strong>视图逻辑</strong>——状态如何决定应用程序的组件。</p>
+<p>这就是魔法发生的地方！在视图逻辑中，我们将应用程序的状态及其可能的交互结合起来
+产生必须向用户显示的用户界面的视觉表示。</p>
 <div align="center" class="right">
-  <img alt="A classical counter interface" src="resources/counter-interface.svg" width="50%">
+  <img alt="经典计数器界面" src="../resources/counter-interface.svg" width="50%">
 </div>
-<p>As we have already learned, this visual representation is made of widgets—the visibly distinct units of an interface. Most
-widgets are not application-specific and they can be abstracted and packaged into reusable libraries. These libraries are
-normally called <em>widget toolkits</em>, <em>GUI frameworks</em>, or simply <em>GUI libraries</em>.</p>
-<p>And this is where <strong>iced</strong> comes in—finally! iced is a cross-platform GUI library for Rust. It packages a fair collection of
-ready-to-use widgets; buttons and numbers included. Exactly what we need for our counter.</p>
-<h3 id="the-buttons"><a class="header" href="#the-buttons">The Buttons</a></h3>
-<p>Our counter interface has two <strong>buttons</strong>. Let’s see how we can define them using iced.</p>
-<p>In iced, widgets are independent values. The same way you can have an integer in a variable, you can have a widget as well.
-These values are normally created using a <em>helper function</em> from the <code>widget</code> module.</p>
-<p>For our buttons, we can use the <code>button</code> helper:</p>
+<p>正如我们已经学到的，这种视觉表示由组件组成——界面的视觉上不同的单元。大多数
+组件不是特定于应用程序的，它们可以被抽象并打包到可重用的库中。这些库通常
+被称为_组件工具包_、<em>GUI 框架_或简称_GUI 库</em>。</p>
+<p>这就是 <strong>iced</strong> 的用武之地——终于！iced 是一个用于 Rust 的跨平台 GUI 库。它打包了相当多的
+现成可用的组件；包括按钮和数字。正是我们计数器所需要的。</p>
+<h3 id="按钮"><a class="header" href="#按钮">按钮</a></h3>
+<p>我们的计数器界面有两个<strong>按钮</strong>。让我们看看如何使用 iced 定义它们。</p>
+<p>在 iced 中，组件是独立的值。就像您可以在变量中有一个整数一样，您也可以有一个组件。
+这些值通常使用 <code>widget</code> 模块中的_辅助函数_创建。</p>
+<p>对于我们的按钮，我们可以使用 <code>button</code> 辅助函数：</p>
 <pre><code class="language-rust ignore">use iced::widget::button;
 
 let increment = button("+");
 let decrement = button("-");</code></pre>
-<p>That’s quite simple, isn’t it? For now, we have just defined a couple of variables for our buttons.</p>
-<p>As we can see, widget helpers may take arguments for configuring parts of the widgets to our liking.
-In this case, the <code>button</code> function takes a single argument used to describe the contents of the button.</p>
-<h3 id="the-number"><a class="header" href="#the-number">The Number</a></h3>
-<p>We have our buttons sitting nicely in our <code>increment</code> and <code>decrement</code> variables. How about we do the same
-for our counter value?</p>
-<p>While iced does not really have a <code>number</code> widget, it does have a more generic <code>text</code> widget that can be used
-to display any kind of text—numbers included:</p>
+<p>这很简单，不是吗？现在，我们只是为我们的按钮定义了几个变量。</p>
+<p>正如我们所看到的，组件辅助函数可能需要参数来配置组件的部分以符合我们的喜好。
+在这种情况下，<code>button</code> 函数接受一个用于描述按钮内容的参数。</p>
+<h3 id="数字"><a class="header" href="#数字">数字</a></h3>
+<p>我们的按钮很好地放在我们的 <code>increment</code> 和 <code>decrement</code> 变量中。我们如何为
+计数器值做同样的事情？</p>
+<p>虽然 iced 实际上没有 <code>number</code> 组件，但它确实有一个更通用的 <code>text</code> 组件，可以用来
+显示任何类型的文本——包括数字：</p>
 <pre><code class="language-rust ignore">use iced::widget::text;
 
 let counter = text(15);</code></pre>
-<p>Sweet! Like <code>button</code>, <code>text</code> also takes an argument used to describe its contents. Since we are just getting started, let’s
-simply hardcode <code>15</code> for now.</p>
-<h3 id="the-layout"><a class="header" href="#the-layout">The Layout</a></h3>
-<p>Alright! We have our two buttons in <code>increment</code> and <code>decrement</code>, and our counter value in <code>counter</code>. That should be everything, right?</p>
-<p>Not so fast! The widgets in our counter interface are displayed in a specific <strong>order</strong>. Given our three widgets, there is a total of
-<strong>six</strong> different ways to order them. However, the order we want is: <code>increment</code>, <code>counter</code>, and <code>decrement</code>.</p>
-<p>A very simple way of describing this order is to create a list with our widgets:</p>
+<p>太好了！像 <code>button</code> 一样，<code>text</code> 也接受一个用于描述其内容的参数。由于我们刚刚开始，让我们
+暂时简单地硬编码 <code>15</code>。</p>
+<h3 id="布局"><a class="header" href="#布局">布局</a></h3>
+<p>好的！我们在 <code>increment</code> 和 <code>decrement</code> 中有我们的两个按钮，在 <code>counter</code> 中有我们的计数器值。这应该就是一切了，对吧？</p>
+<p>不要这么快！我们计数器界面中的组件以特定的<strong>顺序</strong>显示。给定我们的三个组件，总共有
+<strong>六</strong>种不同的排序方式。然而，我们想要的顺序是：<code>increment</code>、<code>counter</code> 和 <code>decrement</code>。</p>
+<p>描述这种顺序的一个非常简单的方法是创建一个包含我们组件的列表：</p>
 <pre><code class="language-rust ignore">let interface = vec![increment, counter, decrement];</code></pre>
-<p>But we are still missing something! It’s not only the order that is specific, our interface also has a specific visual <strong>layout</strong>.</p>
-<p>The widgets are positioned on top of each other, but they could very well be positioned from left to right instead. There is nothing
-in our description so far that talks about the <strong>layout</strong> of our widgets.</p>
-<p>In iced, layout is described using… well, more widgets! That’s right. Not all widgets produce visual results directly; some may simply
-manage the position of existing widgets. And since widgets are just values, they can be nested and composed nicely.</p>
-<p>The kind of vertical layout that we need for our counter can be achieved with the <code>column</code> widget:</p>
+<p>但我们仍然缺少一些东西！不仅顺序是特定的，我们的界面还有特定的视觉<strong>布局</strong>。</p>
+<p>组件彼此堆叠，但它们也可以从左到右定位。在我们迄今为止的描述中，没有任何内容
+谈论我们组件的<strong>布局</strong>。</p>
+<p>在 iced 中，布局使用…嗯，更多组件来描述！没错。并非所有组件都直接产生视觉结果；有些可能只是
+管理现有组件的位置。由于组件只是值，它们可以很好地嵌套和组合。</p>
+<p>我们计数器需要的那种垂直布局可以通过 <code>column</code> 组件实现：</p>
 <pre><code class="language-rust ignore">use iced::widget::column;
 
 let interface = column![increment, counter, decrement];</code></pre>
-<p>This is very similar to our previous snippet. iced provides a <code>column!</code> macro for creating a <code>column</code> out of some widgets in a particular
-<strong>order</strong>—analogous to <code>vec!</code>.</p>
-<h3 id="the-interactions"><a class="header" href="#the-interactions">The Interactions</a></h3>
-<p>At this point, we have in our <code>interface</code> variable a <code>column</code> representing our counter interface. But if we actually tried to run it,
-we would quickly find out that something is wrong.</p>
-<p>Our buttons would be completely disabled. Of course! We have not defined any <strong>interactions</strong> for them. Notice that we have yet
-to use our <code>Message</code> enum in our view logic. How is our user interface supposed to produce <strong>messages</strong> if we don’t specify
-them? Let’s do that now.</p>
-<p>In iced, every widget has a specific type that enables further configuration using simple builder methods. The <code>button</code>
-helper returns an instance of <a href="https://docs.rs/iced/0.12.1/iced/widget/struct.Button.html">the <code>Button</code> type</a>, which has an <code>on_press</code> method we can use to define the message it must
-<strong>produce</strong> when a user presses the button:</p>
+<p>这与我们之前的代码片段非常相似。iced 提供了一个 <code>column!</code> 宏，用于从特定
+<strong>顺序</strong>的一些组件创建 <code>column</code>——类似于 <code>vec!</code>。</p>
+<h3 id="交互"><a class="header" href="#交互">交互</a></h3>
+<p>此时，我们在 <code>interface</code> 变量中有一个表示我们计数器界面的 <code>column</code>。但如果我们实际尝试运行它，
+我们会很快发现有些不对劲。</p>
+<p>我们的按钮将完全被禁用。当然！我们还没有为它们定义任何<strong>交互</strong>。注意我们还没有
+在视图逻辑中使用我们的 <code>Message</code> 枚举。如果我们不指定，我们的用户界面如何产生<strong>消息</strong>
+呢？让我们现在就做。</p>
+<p>在 iced 中，每个组件都有一个特定的类型，可以使用简单的构建器方法进行进一步配置。<code>button</code>
+辅助函数返回<a href="https://docs.rs/iced/0.12.1/iced/widget/struct.Button.html"><code>Button</code> 类型</a>的实例，它有一个 <code>on_press</code> 方法，我们可以用它来定义当用户按下按钮时它必须
+<strong>产生</strong>的消息：</p>
 <pre><code class="language-rust ignore">use iced::widget::button;
 
 let increment = button("+").on_press(Message::Increment);
 let decrement = button("-").on_press(Message::Decrement);</code></pre>
-<p>Awesome! Our interactions are wired up. But there is still a small detail left. A button can be pressed multiple times. Therefore,
-the same button may need to produce multiple instances of the same <code>Message</code>. As a result, we need our <code>Message</code> type to be cloneable.</p>
-<p>We can easily <em>derive</em> the <code>Clone</code> trait—as well as <code>Debug</code> and <code>Copy</code> for good measure:</p>
+<p>太棒了！我们的交互已经连接好了。但还有一个小细节。按钮可以被多次按下。因此，
+同一个按钮可能需要产生同一个 <code>Message</code> 的多个实例。结果，我们需要我们的 <code>Message</code> 类型是可克隆的。</p>
+<p>我们可以轻松地_派生_ <code>Clone</code> 特征——以及 <code>Debug</code> 和 <code>Copy</code> 以防万一：</p>
 <pre><code class="language-rust">#[derive(Debug, Clone, Copy)]
 enum Message {
     Increment,
     Decrement,
 }</code></pre>
-<p>In The Elm Architecture, messages represent <strong>events</strong> that have occurred—made of pure data. As a consequence, it should always be easy
-to derive <code>Debug</code> and <code>Clone</code> for our <code>Message</code> type.</p>
-<h3 id="the-view"><a class="header" href="#the-view">The View</a></h3>
-<p>We are almost there! There is only one thing left to do: connecting our application <strong>state</strong> to the view logic.</p>
-<p>Let’s bring together all the view logic we have written so far:</p>
+<p>在 Elm 架构中，消息表示已经发生的<strong>事件</strong>——由纯数据组成。因此，为我们的 <code>Message</code> 类型派生 <code>Debug</code> 和 <code>Clone</code> 应该总是很容易的。</p>
+<h3 id="视图"><a class="header" href="#视图">视图</a></h3>
+<p>我们快到了！只剩下一件事要做：将我们的应用程序<strong>状态</strong>连接到视图逻辑。</p>
+<p>让我们汇总到目前为止编写的所有视图逻辑：</p>
 <pre><code class="language-rust ignore">use iced::widget::{button, column, text};
 
-// The buttons
+// 按钮
 let increment = button("+").on_press(Message::Increment);
 let decrement = button("-").on_press(Message::Decrement);
 
-// The number
+// 数字
 let counter = text(15);
 
-// The layout
+// 布局
 let interface = column![increment, counter, decrement];</code></pre>
-<p>If we ran this view logic, we would now be able to press the buttons. However, nothing would happen as a result. The
-counter would be stuck—always showing the number <code>15</code>. Our interface is completely stateless!</p>
-<p>Obviously, the issue here is that our <code>counter</code> variable contains a text widget with a hardcoded <code>15</code>. Instead, what
-we want is to actually display the <code>value</code> field of our <code>Counter</code> state. This way, when a button is pressed and
-our update logic is triggered, the text widget will display the new <code>value</code>.</p>
-<p>We can easily do this by running our view logic in a method of our <code>Counter</code>—just like we did with our update logic:</p>
+<p>如果我们运行这个视图逻辑，我们现在能够按下按钮。然而，结果什么也不会发生。
+计数器会卡住——总是显示数字 <code>15</code>。我们的界面完全是无状态的！</p>
+<p>显然，这里的问题是我们的 <code>counter</code> 变量包含一个硬编码 <code>15</code> 的文本组件。相反，我们
+想要的是实际显示我们 <code>Counter</code> 状态的 <code>value</code> 字段。这样，当按下按钮并
+触发我们的更新逻辑时，文本组件将显示新的 <code>value</code>。</p>
+<p>我们可以通过在我们的 <code>Counter</code> 的方法中运行我们的视图逻辑来轻松做到这一点——就像我们对更新逻辑所做的那样：</p>
 <pre><code class="language-rust ignore">use iced::widget::{button, column, text};
 
 impl Counter {
     fn view(&amp;self) {
-        // The buttons
+        // 按钮
         let increment = button("+").on_press(Message::Increment);
         let decrement = button("-").on_press(Message::Decrement);
 
-        // The number
+        // 数字
         let counter = text(self.value);
 
-        // The layout
+        // 布局
         let interface = column![increment, counter, decrement];
     }
 }</code></pre>
-<p>Our <code>counter</code> variable now will always have a <code>text</code> widget with the current <code>value</code> of our <code>Counter</code>. Great!</p>
-<p>However, and as you may have noticed, this <code>view</code> method is completely useless—it constructs an
-<code>interface</code>, but then… It does nothing with it and throws it away!</p>
+<p>我们的 <code>counter</code> 变量现在将始终有一个带有我们 <code>Counter</code> 当前 <code>value</code> 的 <code>text</code> 组件。太好了！</p>
+<p>然而，正如您可能注意到的，这个 <code>view</code> 方法完全没用——它构造了一个
+<code>interface</code>，但然后…它什么也不做，把它扔掉了！</p>
 <blockquote>
-<p>In iced, constructing and configuring widgets has no side effects. There is no “global context” you need to
-worry about in your view code.</p>
+<p>在 iced 中，构造和配置组件没有副作用。在您的视图代码中没有需要
+担心的“全局上下文“。</p>
 </blockquote>
-<p>Instead of throwing the <code>interface</code> away, we need to return it. Remember, the purpose of our <strong>view logic</strong> is
-to dictate the widgets of our user interface; and the content of the <code>interface</code> variable is precisely the
-description of the interface we want:</p>
+<p>我们需要返回 <code>interface</code>，而不是把它扔掉。记住，我们<strong>视图逻辑</strong>的目的是
+决定我们用户界面的组件；<code>interface</code> 变量的内容正是我们想要的
+界面的描述：</p>
 <pre><code class="language-rust ignore">use iced::widget::{button, column, text, Column};
 
 impl Counter {
     fn view(&amp;self) -&gt; Column&lt;Message&gt; {
-        // The buttons
+        // 按钮
         let increment = button("+").on_press(Message::Increment);
         let decrement = button("-").on_press(Message::Decrement);
 
-        // The number
+        // 数字
         let counter = text(self.value);
 
-        // The layout
+        // 布局
         let interface = column![increment, counter, decrement];
 
         interface
     }
 }</code></pre>
-<p>Tada! Notice how the <code>view</code> method needs a return type now. The returned type is <code>Column</code> because the <code>column!</code> macro produces
-a widget of this type—just like <code>button</code> produces a widget of the <code>Button</code> type.</p>
-<p>You may also have noticed that this <code>Column</code> type has a generic type parameter. This type parameter simply specifies the type
-of messages the widget may produce. In this case, it takes our <code>Message</code> because the <code>increment</code> and <code>decrement</code> buttons inside
-the column produce messages of this type.</p>
+<p>太棒了！注意 <code>view</code> 方法现在需要一个返回类型。返回的类型是 <code>Column</code>，因为 <code>column!</code> 宏产生
+这种类型的组件——就像 <code>button</code> 产生 <code>Button</code> 类型的组件一样。</p>
+<p>您可能还注意到这个 <code>Column</code> 类型有一个泛型类型参数。这个类型参数简单地指定
+组件可能产生的消息类型。在这种情况下，它接受我们的 <code>Message</code>，因为列内的 <code>increment</code> 和 <code>decrement</code> 按钮
+产生这种类型的消息。</p>
 <blockquote>
-<p>iced has a strong focus on type safety—leveraging the type system and compile-time guarantees to minimize runtime errors
-as much as possible.</p>
+<p>iced 强烈关注类型安全——利用类型系统和编译时保证来尽可能减少运行时错误。</p>
 </blockquote>
-<p>And well… That’s it! Our view logic is done! But wait… It’s a bit verbose right now. Since it’s such a simple interface,
-let’s just inline everything:</p>
+<p>嗯…就是这样！我们的视图逻辑完成了！但等等…现在有点冗长。由于这是一个如此简单的界面，
+让我们内联所有内容：</p>
 <div align="center" class="right">
-  <img alt="A classical counter interface" src="resources/counter-interface.svg" width="50%">
+  <img alt="经典计数器界面" src="../resources/counter-interface.svg" width="50%">
 </div>
 <pre><code class="language-rust ignore">use iced::widget::{button, column, text, Column};
 
@@ -530,31 +493,30 @@ impl Counter {
         ]
     }
 }</code></pre>
-<p>That’s much more concise. It even resembles the actual interface! Since creating widgets just yields values with no
-side effects; we can move things around in our view logic without worrying about breaking other stuff. No spooky
-action at a distance!</p>
-<p>And that’s all there is to our counter interface. I am sure you can’t wait to <strong>run</strong> it. Shall we?</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="the-runtime"><a class="header" href="#the-runtime">The Runtime</a></h1>
-<p>In the previous chapter we built the classical counter interface using iced and The Elm Architecture. We focused on each
-fundamental part—one at a time: <strong>state</strong>, <strong>messages</strong>, <strong>update logic</strong>, and <strong>view logic</strong>.</p>
-<p>But now what? Yes, we have all the fundamental parts of a user interface—as we learned during
-<a href="architecture.html">our dissection</a>—but it is unclear how we are supposed to bring it to life.</p>
-<p>It seems we are missing <em>something</em> that can put all the parts together and <em>run</em> them in unison. <em>Something</em> that
-creates and runs the fundamental loop of a user interface—displaying widgets to a user and reacting to any interactions.</p>
-<p>This <em>something</em> is called the <strong>runtime</strong>. You can think of it as the environment where the feedback loop of a user
-interface takes place. The runtime is in charge of every part of the loop: initializing the <strong>state</strong>,
-producing <strong>messages</strong>, executing the <strong>update logic</strong>, and running our <strong>view logic</strong>.</p>
+<p>这更简洁了。它甚至类似于实际的界面！由于创建组件只是产生没有
+副作用的值；我们可以在视图逻辑中移动东西而不用担心破坏其他东西。没有诡异的
+远距离作用！</p>
+<p>这就是我们计数器界面的全部内容。我相信您迫不及待地想要<strong>运行</strong>它。我们开始吧？</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="运行时"><a class="header" href="#运行时">运行时</a></h1>
+<p>在上一章中，我们使用 iced 和 Elm 架构构建了经典的计数器界面。我们专注于每个
+基本部分——一次一个：<strong>状态</strong>、<strong>消息</strong>、<strong>更新逻辑</strong>和<strong>视图逻辑</strong>。</p>
+<p>但现在怎么办？是的，我们有用户界面的所有基本部分——正如我们在
+<a href="architecture.html">剖析过程中</a>学到的——但不清楚我们应该如何让它活起来。</p>
+<p>看起来我们缺少_某些东西_，可以将所有部分组合在一起并让它们协调_运行_。_某些东西_可以
+创建并运行用户界面的基本循环——向用户显示组件并对任何交互做出反应。</p>
+<p>这个_某些东西_被称为<strong>运行时</strong>。您可以将其视为用户界面反馈循环发生的环境。运行时负责循环的每个部分：初始化<strong>状态</strong>、
+产生<strong>消息</strong>、执行<strong>更新逻辑</strong>和运行我们的<strong>视图逻辑</strong>。</p>
 <div align="center">
-  <img alt="The Runtime" src="resources/the-runtime.svg">
+  <img alt="运行时" src="../resources/the-runtime.svg">
 </div>
 <blockquote>
-<p>Another way to picture the runtime is by imagining a huge engine with four fundamental parts missing. Our job is
-to fill in these parts—and then the engine can run!</p>
+<p>想象运行时的另一种方式是想象一个缺少四个基本部分的巨大引擎。我们的工作是
+填补这些部分——然后引擎就可以运行了！</p>
 </blockquote>
-<h2 id="a-magical-runtime"><a class="header" href="#a-magical-runtime">A Magical Runtime</a></h2>
-<p>Let’s try to get a better understanding of the lifetime of an interface by exploring the internals of a basic (although very magical!) runtime.</p>
-<p>In fact, we have actually started writing a runtime already! When <a href="first-steps.html#update-logic">we implemented the update logic of our counter</a>,
-we wrote a very small test that simulated a user:</p>
+<h2 id="神奇的运行时"><a class="header" href="#神奇的运行时">神奇的运行时</a></h2>
+<p>让我们通过探索基本（虽然非常神奇！）运行时的内部来更好地理解界面的生命周期。</p>
+<p>事实上，我们实际上已经开始编写运行时了！当<a href="first-steps.html#update-logic">我们实现计数器的更新逻辑</a>时，
+我们编写了一个模拟用户的非常小的测试：</p>
 <pre><code class="language-rust ignore">#[test]
 fn it_counts_properly() {
     let mut counter = Counter { value: 0 };
@@ -565,130 +527,128 @@ fn it_counts_properly() {
 
     assert_eq!(counter.value, 1);
 }</code></pre>
-<p>This is technically a very bare-bones runtime. It initializes the <strong>state</strong>, produces some <strong>interactions</strong>,
-and executes the <strong>update logic</strong>.</p>
-<p>Of course, the interactions are made up, it is very short-lived, and there is no <strong>view logic</strong>
-involved—far from what we actually want. Still, it’s a great start! Let’s try to extend it, step by step.</p>
-<h3 id="initializing-the-state"><a class="header" href="#initializing-the-state">Initializing the State</a></h3>
-<p>Our small runtime is already initializing the application state properly:</p>
-<pre><code class="language-rust ignore">// Initialize the state
+<p>从技术上讲，这是一个非常基础的运行时。它初始化<strong>状态</strong>，产生一些<strong>交互</strong>，
+并执行<strong>更新逻辑</strong>。</p>
+<p>当然，交互是编造的，它非常短暂，并且没有涉及<strong>视图逻辑</strong>
+——远非我们实际想要的。尽管如此，这是一个很好的开始！让我们尝试逐步扩展它。</p>
+<h3 id="初始化状态"><a class="header" href="#初始化状态">初始化状态</a></h3>
+<p>我们的小运行时已经正确初始化了应用程序状态：</p>
+<pre><code class="language-rust ignore">// 初始化状态
 let mut counter = Counter { value: 0 };</code></pre>
-<p>However, we can avoid hardcoding the initial state by leveraging the <code>Default</code> trait. Let’s just derive it:</p>
+<p>但是，我们可以通过利用 <code>Default</code> 特征来避免硬编码初始状态。让我们派生它：</p>
 <pre><code class="language-rust">#[derive(Default)]
 struct Counter {
     value: i64
 }</code></pre>
-<p>And then, we simply use <code>Counter::default</code> in our runtime:</p>
-<pre><code class="language-rust ignore">// Initialize the state
+<p>然后，我们在运行时中简单地使用 <code>Counter::default</code>：</p>
+<pre><code class="language-rust ignore">// 初始化状态
 let mut counter = Counter::default();</code></pre>
-<p>The difference may be subtle, but we are separating concerns—we keep the initial state of our application close to
-the state definition and separated from the runtime. This way, we may eventually be able to make our runtime work with
-<em>any</em> application!</p>
-<h3 id="displaying-the-interface"><a class="header" href="#displaying-the-interface">Displaying the Interface</a></h3>
-<p>Alright! We have our <strong>state</strong> initialized. What’s next? Well, before a user can <strong>interact</strong> with our interface, we
-need to <strong>display</strong> it to them.</p>
-<p>That’s easy! We just need to open a window in whatever OS the user is running, initialize a proper graphics backend,
-and then render the widgets returned by our <strong>view logic</strong>—properly laid out, of course!</p>
-<p>What? You have no clue of how to do that? Don’t worry, I have this magical function: <code>display</code>. It takes a reference to
-any interface and displays it to the user. It totally works!</p>
+<p>差异可能很微妙，但我们正在分离关注点——我们将应用程序的初始状态保持在
+状态定义附近，并与运行时分离。这样，我们最终可能能够让我们的运行时与
+_任何_应用程序一起工作！</p>
+<h3 id="显示界面"><a class="header" href="#显示界面">显示界面</a></h3>
+<p>好的！我们已经初始化了<strong>状态</strong>。接下来是什么？嗯，在用户可以与我们的界面<strong>交互</strong>之前，我们
+需要向他们<strong>显示</strong>它。</p>
+<p>这很容易！我们只需要在用户运行的任何操作系统中打开一个窗口，初始化适当的图形后端，
+然后渲染我们<strong>视图逻辑</strong>返回的组件——当然要正确布局！</p>
+<p>什么？您不知道如何做到这一点？别担心，我有这个神奇的函数：<code>display</code>。它接受任何界面的引用并将其显示给用户。它完全有效！</p>
 <pre><code class="language-rust ignore">use magic::display;
 
-<span class="boring">// Initialize the state
+<span class="boring">// 初始化状态
 </span><span class="boring">let mut counter = Counter::default();
 </span><span class="boring">
-</span>// Run our view logic to obtain our interface
+</span>// 运行我们的视图逻辑以获得我们的界面
 let interface = counter.view();
 
-// Display the interface to the user
+// 向用户显示界面
 display(&amp;interface);</code></pre>
-<p>See? Easy! Jokes aside, the purpose of this chapter is not for us to learn graphics programming; but for us
-to get a better understanding of how a runtime works. A little bit of magic doesn’t hurt!</p>
-<h3 id="gathering-the-interactions"><a class="header" href="#gathering-the-interactions">Gathering the Interactions</a></h3>
-<p>The user is seeing our interface and is now interacting with it. We need to pay very good attention to all
-the interactions and produce all the relevant <strong>messages</strong> that our widgets specify.</p>
-<p>How? With some more magic, of course! I just found this <code>interact</code> function inside of my top hat—it takes an
-interface and produces the <strong>messages</strong> that correspond to the latest interactions of the user.</p>
+<p>看？简单！玩笑归玩笑，本章的目的不是让我们学习图形编程；而是让我们
+更好地理解运行时是如何工作的。一点魔法不会有害！</p>
+<h3 id="收集交互"><a class="header" href="#收集交互">收集交互</a></h3>
+<p>用户正在看我们的界面并与之交互。我们需要非常注意所有
+交互并产生我们的组件指定的所有相关<strong>消息</strong>。</p>
+<p>如何？当然是用更多的魔法！我刚刚在我的礼帽里找到了这个 <code>interact</code> 函数——它接受一个
+界面并产生对应于用户最新交互的<strong>消息</strong>。</p>
 <pre><code class="language-rust ignore">use magic::{display, interact};
 
-<span class="boring">// Initialize the state
+<span class="boring">// 初始化状态
 </span><span class="boring">let mut counter = Counter::default();
 </span><span class="boring">
-</span><span class="boring">// Run our view logic to obtain our interface
+</span><span class="boring">// 运行我们的视图逻辑以获得我们的界面
 </span><span class="boring">let interface = counter.view();
 </span><span class="boring">
-</span><span class="boring">// Display the interface to the user
+</span><span class="boring">// 向用户显示界面
 </span><span class="boring">display(&amp;interface);
 </span><span class="boring">
-</span>// Process the user interactions and obtain our messages
+</span>// 处理用户交互并获得我们的消息
 let messages = interact(&amp;interface);</code></pre>
-<p>Great! <code>interact</code> returns a list of <strong>messages</strong> for us—ready to be iterated.</p>
-<h3 id="reacting-to-the-interactions"><a class="header" href="#reacting-to-the-interactions">Reacting to the Interactions</a></h3>
-<p>At this point, we have gathered the user interactions and we have turned them into a bunch of <strong>messages</strong>. In order to
-react properly to the user, we need to update our <strong>state</strong> accordingly for each message.</p>
-<p>Luckily, there are no more magic tricks involved in this step—we can just use our <strong>update logic</strong>:</p>
+<p>太好了！<code>interact</code> 为我们返回一个<strong>消息</strong>列表——准备好被迭代。</p>
+<h3 id="对交互做出反应"><a class="header" href="#对交互做出反应">对交互做出反应</a></h3>
+<p>此时，我们已经收集了用户交互并将它们转换为一堆<strong>消息</strong>。为了
+正确地对用户做出反应，我们需要为每个消息相应地更新我们的<strong>状态</strong>。</p>
+<p>幸运的是，这一步不涉及更多的魔法技巧——我们可以只使用我们的<strong>更新逻辑</strong>：</p>
 <pre><code class="language-rust ignore"><span class="boring">use magic::{display, interact};
 </span><span class="boring">
-</span><span class="boring">// Initialize the state
+</span><span class="boring">// 初始化状态
 </span><span class="boring">let mut counter = Counter::default();
 </span><span class="boring">
-</span><span class="boring">// Run our view logic to obtain our interface
+</span><span class="boring">// 运行我们的视图逻辑以获得我们的界面
 </span><span class="boring">let interface = counter.view();
 </span><span class="boring">
-</span><span class="boring">// Display the interface to the user
+</span><span class="boring">// 向用户显示界面
 </span><span class="boring">display(&amp;interface);
 </span><span class="boring">
-</span><span class="boring">// Process the user interactions and obtain our messages
+</span><span class="boring">// 处理用户交互并获得我们的消息
 </span><span class="boring">let messages = interact(&amp;interface);
 </span><span class="boring">
-</span>// Update our state by processing each message
+</span>// 通过处理每个消息来更新我们的状态
 for message in messages {
     counter.update(message);
 }</code></pre>
-<p>That should keep our state completely up-to-date with the latest user interactions.</p>
-<h3 id="looping-around"><a class="header" href="#looping-around">Looping Around</a></h3>
-<p>Okay! Our state has been updated to reflect the user interactions. Now, we need to display the resulting interface again
-to the user. And after that, we must process any further interactions… And then, update our state once more.
-And then… Do it all over once again!</p>
-<p>This is a loop! And no, loops aren’t very magical—not when we write Rust, at least:</p>
+<p>这应该让我们的状态与最新的用户交互完全保持同步。</p>
+<h3 id="循环"><a class="header" href="#循环">循环</a></h3>
+<p>好的！我们的状态已经更新以反映用户交互。现在，我们需要再次向用户显示结果界面。之后，我们必须处理任何进一步的交互…然后，再次更新我们的状态。
+然后…再次重复这一切！</p>
+<p>这是一个循环！不，循环并不是很神奇——至少当我们编写 Rust 时不是：</p>
 <pre><code class="language-rust ignore">use magic::{display, interact};
 
-// Initialize the state
+// 初始化状态
 let mut counter = Counter::default();
 
-// Be interactive. All the time! 
+// 保持交互。一直如此！
 loop {
-    // Run our view logic to obtain our interface
+    // 运行我们的视图逻辑以获得我们的界面
     let interface = counter.view();
 
-    // Display the interface to the user
+    // 向用户显示界面
     display(&amp;interface);
 
-    // Process the user interactions and obtain our messages
+    // 处理用户交互并获得我们的消息
     let messages = interact(&amp;interface);
 
-    // Update our state by processing each message
+    // 通过处理每个消息来更新我们的状态
     for message in messages {
         counter.update(message);
     }
 }</code></pre>
-<p>Congratulations! We just wrote a perfectly functional runtime—magical properties aside. We can clearly understand here how
-each fundamental part of The Elm Architecture fits in the lifetime of an application.</p>
-<p>Specifically,</p>
+<p>恭喜！我们刚刚编写了一个完全功能的运行时——除了神奇的属性。我们可以清楚地理解这里
+Elm 架构的每个基本部分如何适应应用程序的生命周期。</p>
+<p>具体来说，</p>
 <ul>
-<li><strong>state</strong> is initialized once,</li>
-<li><strong>view logic</strong> runs once at startup and then after every batch of interactions,</li>
-<li>and <strong>update logic</strong> runs for every interaction that created a <strong>message</strong>.</li>
+<li><strong>状态</strong>初始化一次，</li>
+<li><strong>视图逻辑</strong>在启动时运行一次，然后在每批交互后运行，</li>
+<li><strong>更新逻辑</strong>为每个创建<strong>消息</strong>的交互运行。</li>
 </ul>
-<h2 id="the-ice-wizard"><a class="header" href="#the-ice-wizard">The Ice Wizard</a></h2>
-<p>“That’s cool and all”, you say, “but I am not a wizard and I still have no clue of how to run the counter interface I wrote.
-I have things to count!”</p>
-<p>Fair enough! iced implements a very similar runtime to the one we just built. It comes bundled with
-its own magic<sup class="footnote-reference" id="fr-magic-1"><a href="#footnote-magic">1</a></sup>—so you don’t need to worry about learning the dark arts yourself.</p>
-<p>If we want to run our <code>Counter</code>, all we have to do is call <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a>:</p>
+<h2 id="冰雪法师"><a class="header" href="#冰雪法师">冰雪法师</a></h2>
+<p>“这很酷”，您说，“但我不是法师，我仍然不知道如何运行我编写的计数器界面。
+我有东西要计算！”</p>
+<p>很公平！iced 实现了一个与我们刚刚构建的非常相似的运行时。它自带
+自己的魔法<sup class="footnote-reference" id="fr-magic-1"><a href="#footnote-magic">1</a></sup>——所以您不需要担心自己学习黑暗艺术。</p>
+<p>如果我们想要运行我们的 <code>Counter</code>，我们所要做的就是调用 <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a>：</p>
 <pre><code class="language-rust ignore iced(height=100px)"><span class="boring">use iced::widget::{button, column, text, Column};
 </span><span class="boring">
 </span>pub fn main() -&gt; iced::Result {
-    iced::run("A cool counter", Counter::update, Counter::view)
+    iced::run("一个酷炫的计数器", Counter::update, Counter::view)
 }
 <span class="boring">
 </span><span class="boring">#[derive(Default)]
@@ -762,84 +722,82 @@ function embed(script, hash, height) {
 }
 </script>
 <script type="module" id="iceberg-0">
-  embed(document.getElementById("iceberg-0"), "55288b479ffed7c5afc0902c91faa1812555df2c747f4c091f1e2dca985faa", "100px");
+  embed(document.getElementById("iceberg-0"), "199762893a5dd38e37491945836672c9a857a6c4c84635486a685f9ad9997", "100px");
 </script>
-<p>We just give our application a <em>cool</em> title and then provide the <strong>update logic</strong> and <strong>view logic</strong> to
-the <strong>runtime</strong>—which then figures out the rest!</p>
-<p>The runtime is capable of inferring the types for the <strong>state</strong> and <strong>messages</strong> out of the type signatures of
-our <strong>update logic</strong> and <strong>view logic</strong>. The <strong>state</strong> is initialized leveraging <code>Default</code>, as we described earlier.</p>
-<p>Notice also that <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a> can fail and, therefore, it returns an <a href="https://docs.iced.rs/iced/type.Result.html"><code>iced::Result</code></a>. If all we are doing is run the
-application, we can return this result directly in <code>main</code>.</p>
-<p>And that should be it! Have fun counting things for 300 million years—at least!</p>
+<p>我们只是给我们的应用程序一个_酷炫_的标题，然后向
+<strong>运行时</strong>提供<strong>更新逻辑</strong>和<strong>视图逻辑</strong>——然后它会处理其余的事情！</p>
+<p>运行时能够从我们<strong>更新逻辑</strong>和<strong>视图逻辑</strong>的类型签名中推断出
+<strong>状态</strong>和<strong>消息</strong>的类型。<strong>状态</strong>使用 <code>Default</code> 初始化，正如我们之前描述的。</p>
+<p>还要注意 <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a> 可能失败，因此它返回一个 <a href="https://docs.iced.rs/iced/type.Result.html"><code>iced::Result</code></a>。如果我们所做的只是运行
+应用程序，我们可以在 <code>main</code> 中直接返回这个结果。</p>
+<p>就是这样！享受计算东西的乐趣吧——至少 3 亿年！</p>
 <blockquote>
-<h4 id="note-from-the-author"><a class="header" href="#note-from-the-author">Note From the Author</a></h4>
-<p>You reached the end of the book, for now!</p>
-<p>I think it should already serve as a quick introduction to the basics of the library.
-There is a lot more to unravel—but hopefully you are now at a point where you can start
-playing around, having fun, and experimenting further.</p>
-<p>The book is far from finished—there are a lot more topics I want to cover here, namely:</p>
+<h4 id="作者的话"><a class="header" href="#作者的话">作者的话</a></h4>
+<p>您已经到达了本书的结尾，目前为止！</p>
+<p>我认为它应该已经作为库基础知识的快速介绍。
+还有很多东西需要揭示——但希望您现在已经到了可以开始
+玩耍、享受乐趣和进一步实验的地步。</p>
+<p>这本书远未完成——我想在这里涵盖更多主题，即：</p>
 <ul>
-<li>Layout</li>
-<li>Styling</li>
-<li>Concurrency</li>
-<li>Scaling Applications</li>
-<li>Extending the Runtime</li>
-<li>And More!</li>
+<li>布局</li>
+<li>样式</li>
+<li>并发</li>
+<li>扩展应用程序</li>
+<li>扩展运行时</li>
+<li>以及更多！</li>
 </ul>
-<p>Until I get to write them, check out the <a href="additional-resources.html">Additional Resources</a>
-chapter if you want to explore and learn further.</p>
-<p>I hope that you enjoyed the read so far. Stay tuned!</p>
+<p>在我写完它们之前，如果您想要探索和进一步学习，请查看<a href="additional-resources.html">其他资源</a>
+章节。</p>
+<p>我希望您到目前为止享受阅读。敬请期待！</p>
 <p>— Héctor</p>
 </blockquote>
 <hr>
 <ol class="footnote-definition"><li id="footnote-magic">
-<p>Mainly <a href="https://github.com/rust-windowing/winit"><code>winit</code></a>, <a href="https://github.com/rust-windowing/softbuffer"><code>softbuffer</code></a>, <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a>, <a href="https://github.com/RazrFalcon/tiny-skia"><code>tiny-skia</code></a>, and <a href="https://github.com/pop-os/cosmic-text"><code>cosmic-text</code></a>. <a href="#fr-magic-1">↩</a></p>
+<p>主要是 <a href="https://github.com/rust-windowing/winit"><code>winit</code></a>、<a href="https://github.com/rust-windowing/softbuffer"><code>softbuffer</code></a>、<a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a>、<a href="https://github.com/RazrFalcon/tiny-skia"><code>tiny-skia</code></a> 和 <a href="https://github.com/pop-os/cosmic-text"><code>cosmic-text</code></a>。 <a href="#fr-magic-1">↩</a></p>
 </li>
-</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="additional-resources"><a class="header" href="#additional-resources">Additional Resources</a></h1>
-<p>Here are some further resources you can use to learn more about iced while I am still working on this book:</p>
+</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="其他资源"><a class="header" href="#其他资源">其他资源</a></h1>
+<p>在我仍在编写这本书的时候，这里有一些您可以用来了解更多关于 iced 的进一步资源：</p>
 <blockquote>
-<p>Keep in mind that some of these resources may be using an older version of iced. However, while the specifics
-of the APIs used may change, the fundamental ideas of iced tend to be quite stable.</p>
+<p>请记住，这些资源中的一些可能使用的是较旧版本的 iced。然而，虽然使用的 API 的具体细节可能会改变，但 iced 的基本思想往往是相当稳定的。</p>
 </blockquote>
 <ul>
-<li>A <a href="https://www.youtube.com/watch?v=gcBJ7cPSALo">step-by-step video guide to building a simple text editor</a></li>
-<li>The <a href="https://github.com/iced-rs/iced/tree/master/examples">official examples</a></li>
-<li>The <a href="https://docs.iced.rs/iced/">API Reference</a></li>
-<li>The <a href="https://github.com/iced-rs/awesome-iced">official list of awesome iced projects</a></li>
-<li>The <a href="https://github.com/iced-rs/awesome-iced#Resources">unofficial guides</a></li>
+<li>一个<a href="https://www.youtube.com/watch?v=gcBJ7cPSALo">构建简单文本编辑器的逐步视频指南</a></li>
+<li><a href="https://github.com/iced-rs/iced/tree/master/examples">官方示例</a></li>
+<li><a href="https://docs.iced.rs/iced/">API 参考</a></li>
+<li><a href="https://github.com/iced-rs/awesome-iced">官方精彩 iced 项目列表</a></li>
+<li><a href="https://github.com/iced-rs/awesome-iced#Resources">非官方指南</a></li>
 </ul>
-<p>We also have a very welcoming and active community! Feel free to ask any questions in <a href="https://discord.gg/3xZJ65GAhd">our Discord server</a> or <a href="https://discourse.iced.rs/">our Discourse forum</a>.</p>
+<p>我们还有一个非常热情和活跃的社区！请随时在<a href="https://discord.gg/3xZJ65GAhd">我们的 Discord 服务器</a>或<a href="https://discourse.iced.rs/">我们的 Discourse 论坛</a>中提出任何问题。</p>
 <p><a href="https://discord.gg/3xZJ65GAhd"><img src="https://img.shields.io/discord/628993209984614400?label=&amp;labelColor=6A7EC2&amp;logo=discord&amp;logoColor=ffffff&amp;color=7389D8" alt="Discord Server" /></a>
 <a href="https://discourse.iced.rs/"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscourse.iced.rs%2Fsite%2Fstatistics.json&amp;query=%24.users_count&amp;suffix=%20users&amp;label=discourse&amp;color=5e7ce2" alt="Discourse" /></a></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="frequently-asked-questions"><a class="header" href="#frequently-asked-questions">Frequently Asked Questions</a></h1>
-<h2 id="when-will-the-book-be-finished"><a class="header" href="#when-will-the-book-be-finished">When Will the Book Be Finished?</a></h2>
-<p>Soon™. Open source is a gift; so whenever I feel like it.</p>
-<h2 id="how-do-i-scale-a-large-application"><a class="header" href="#how-do-i-scale-a-large-application">How Do I Scale a Large Application?</a></h2>
-<p>You split your application into multiple screens, and then use simple composition.</p>
-<p><a href="https://docs.rs/iced/0.13.1/iced/index.html#the-pocket-guide">The Pocket Guide</a> has <a href="https://docs.rs/iced/0.13.1/iced/#scaling-applications">a specific section that showcases this approach</a>.</p>
-<h2 id="how-can-my-application-receive-updates-from-a-channel"><a class="header" href="#how-can-my-application-receive-updates-from-a-channel">How Can My Application Receive Updates From a Channel?</a></h2>
-<p>You can use <a href="https://docs.rs/iced/0.13.1/iced/task/struct.Task.html#method.run"><code>Task::run</code></a> to generate messages from an asynchronous <a href="https://docs.rs/futures/latest/futures/stream/trait.Stream.html"><code>Stream</code></a>.</p>
-<p>Alternatively, if you control the creation of the channel; you can use <a href="https://docs.rs/iced/0.13.1/iced/struct.Subscription.html#method.run"><code>Subscription::run</code></a>.</p>
-<h2 id="does-iced-support-right-to-left-text-andor-cjk-scripts"><a class="header" href="#does-iced-support-right-to-left-text-andor-cjk-scripts">Does Iced Support Right-To-Left Text and/or CJK scripts?</a></h2>
-<p>Not very well yet!</p>
-<p>You may be able to render some scripts using <a href="https://docs.rs/iced/0.13.1/iced/widget/text/type.Text.html#method.shaping"><code>Text::shaping</code></a> with <a href="https://docs.rs/iced/0.13.1/iced/widget/text/enum.Shaping.html#variant.Advanced"><code>Shaping::Advanced</code></a>,
-but text editing for these scripts is not yet supported; and neither are <a href="https://en.wikipedia.org/wiki/Input_method">Input Method Editors</a>.</p>
-<p>These features are in the <a href="https://whimsical.com/roadmap-iced-7vhq6R35Lp3TmYH4WeYwLM"><code>ROADMAP</code></a>, however!</p>
-<h2 id="when-are-the-view-and-subscription-functions-called"><a class="header" href="#when-are-the-view-and-subscription-functions-called">When Are the <code>view</code> and <code>subscription</code> Functions Called?</a></h2>
-<p>After every batch of messages and <code>update</code> calls. But this is an implementation detail;
-and should never rely on this.</p>
-<p>Try to treat these functions as declarative, stateless functions.</p>
-<h2 id="does-iced-redraw-all-the-time"><a class="header" href="#does-iced-redraw-all-the-time">Does Iced Redraw All the Time?!</a></h2>
-<p>Yes! iced currently redraws after every runtime event; including tiny mouse movements.</p>
-<p>There are plans to redraw less frequently by detecting widget state changes, but performance has not
-been a priority so far.</p>
-<p>The renderers do perform quite a lot of caching; so redrawing is quite cheap. As a result,
-this is rarely an issue for most use cases!</p>
-<h2 id="i-am-getting-a-panic-saying-there-is-no-reactor-running-what-is-going-on"><a class="header" href="#i-am-getting-a-panic-saying-there-is-no-reactor-running-what-is-going-on">I Am Getting A Panic Saying There Is No Reactor Running. What Is Going On?</a></h2>
-<p>You are probably using <code>Task</code> to execute a <code>Future</code> that needs the <code>tokio</code> executor:</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="常见问题"><a class="header" href="#常见问题">常见问题</a></h1>
+<h2 id="这本书什么时候完成"><a class="header" href="#这本书什么时候完成">这本书什么时候完成？</a></h2>
+<p>Soon™。开源是一份礼物；所以随时我想写的时候。</p>
+<h2 id="如何扩展大型应用程序"><a class="header" href="#如何扩展大型应用程序">如何扩展大型应用程序？</a></h2>
+<p>您将应用程序拆分为多个屏幕，然后使用简单的组合。</p>
+<p><a href="https://docs.rs/iced/0.13.1/iced/index.html#the-pocket-guide">袖珍指南</a> 有<a href="https://docs.rs/iced/0.13.1/iced/#scaling-applications">一个展示这种方法的特定部分</a>。</p>
+<h2 id="我的应用程序如何从通道接收更新"><a class="header" href="#我的应用程序如何从通道接收更新">我的应用程序如何从通道接收更新？</a></h2>
+<p>您可以使用 <a href="https://docs.rs/iced/0.13.1/iced/task/struct.Task.html#method.run"><code>Task::run</code></a> 从异步 <a href="https://docs.rs/futures/latest/futures/stream/trait.Stream.html"><code>Stream</code></a> 生成消息。</p>
+<p>或者，如果您控制通道的创建；您可以使用 <a href="https://docs.rs/iced/0.13.1/iced/struct.Subscription.html#method.run"><code>Subscription::run</code></a>。</p>
+<h2 id="iced-支持从右到左的文本和或-cjk-脚本吗"><a class="header" href="#iced-支持从右到左的文本和或-cjk-脚本吗">Iced 支持从右到左的文本和/或 CJK 脚本吗？</a></h2>
+<p>还不是很好！</p>
+<p>您可能能够使用带有 <a href="https://docs.rs/iced/0.13.1/iced/widget/text/enum.Shaping.html#variant.Advanced"><code>Shaping::Advanced</code></a> 的 <a href="https://docs.rs/iced/0.13.1/iced/widget/text/type.Text.html#method.shaping"><code>Text::shaping</code></a> 渲染一些脚本，
+但这些脚本的文本编辑尚不受支持；<a href="https://en.wikipedia.org/wiki/Input_method">输入法编辑器</a> 也不受支持。</p>
+<p>不过，这些功能在 <a href="https://whimsical.com/roadmap-iced-7vhq6R35Lp3TmYH4WeYwLM"><code>ROADMAP</code></a> 中！</p>
+<h2 id="view-和-subscription-函数何时被调用"><a class="header" href="#view-和-subscription-函数何时被调用"><code>view</code> 和 <code>subscription</code> 函数何时被调用？</a></h2>
+<p>在每批消息和 <code>update</code> 调用之后。但这是一个实现细节；
+永远不应该依赖这一点。</p>
+<p>尝试将这些函数视为声明性的、无状态的函数。</p>
+<h2 id="iced-一直在重绘吗"><a class="header" href="#iced-一直在重绘吗">Iced 一直在重绘吗？！</a></h2>
+<p>是的！iced 目前在每个运行时事件后重绘；包括微小的鼠标移动。</p>
+<p>有计划通过检测组件状态变化来减少重绘频率，但性能到目前为止还不是优先考虑的。</p>
+<p>渲染器确实执行了相当多的缓存；所以重绘相当便宜。因此，
+对于大多数用例来说，这很少是问题！</p>
+<h2 id="我收到一个恐慌说没有运行反应器这是怎么回事"><a class="header" href="#我收到一个恐慌说没有运行反应器这是怎么回事">我收到一个恐慌，说没有运行反应器。这是怎么回事？</a></h2>
+<p>您可能正在使用 <code>Task</code> 来执行需要 <code>tokio</code> 执行器的 <code>Future</code>：</p>
 <pre><code class="language-text">there is no reactor running, must be called from the context of a Tokio 1.x runtime
 </code></pre>
-<p>You should be able to fix this issue by enabling <a href="https://docs.rs/crate/iced/latest/features#tokio">the <code>tokio</code> feature flag</a> in the <code>iced</code> crate:</p>
+<p>您应该能够通过在 <code>iced</code> crate 中启用 <a href="https://docs.rs/crate/iced/latest/features#tokio">the <code>tokio</code> feature flag</a> 来解决这个问题：</p>
 <pre><code class="language-toml">iced = { version = "0.13", features = ["tokio"] }
 </code></pre>
 

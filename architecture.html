@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Architecture - Iced 中文教程 — Rust跨平台GUI库</title>
+        <title>架构 - Iced 中文教程 — Rust跨平台GUI库</title>
 
 
         <!-- Custom HTML head -->
@@ -142,7 +142,7 @@
                         <a href="https://github.com/Xiao-VoV/Iced_book_Chinese_pub" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/Xiao-VoV/Iced_book_Chinese_pub/edit/master/src/architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Xiao-VoV/Iced_book_Chinese_pub/edit/master/src/Chinese/architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -171,106 +171,71 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
-<p>Let’s start from the basics! You are probably very familiar with graphical user interfaces already.
-You can find them on your phone, computer, and most interactive electronic devices. In fact, you are
-most likely reading this book using one!</p>
-<p>At their essence, graphical user interfaces are applications that <strong>display</strong> some information graphically
-to a user. This user can then choose to <strong>interact</strong> with the application—normally using some kind of device;
-like a keyboard, mouse, or touchscreen.</p>
+                        <h1 id="架构"><a class="header" href="#架构">架构</a></h1>
+<p>让我们从基础开始！您可能已经非常熟悉图形用户界面了。
+您可以在手机、计算机和大多数交互式电子设备上找到它们。事实上，您很可能正在使用一个来阅读这本书！</p>
+<p>从本质上讲，图形用户界面是向用户图形化<strong>显示</strong>一些信息的应用程序。然后用户可以选择与应用程序<strong>交互</strong>——通常使用某种设备；比如键盘、鼠标或触摸屏。</p>
 <div align="center">
-  <img alt="Interface displays, user interacts" src="resources/gui-displays-user-interacts.svg">
+  <img alt="界面显示，用户交互" src="../resources/gui-displays-user-interacts.svg">
 </div>
-<p>The user interactions may cause the application to update and display new information as a result, which in turn
-may cause further user interactions, which in turn cause further updates… And so on. This quick feedback loop
-is what causes the feeling of <em>interactivity</em>.</p>
+<p>用户交互可能导致应用程序更新并因此显示新信息，这反过来可能导致进一步的用户交互，进而导致进一步的更新…等等。这种快速的反馈循环是产生<em>交互性</em>感觉的原因。</p>
 <blockquote>
-<p>Note: In this book, we will refer to graphical user interfaces as <strong>GUIs</strong>, <strong>UIs</strong>, <strong>user interfaces</strong>, or simply
-<strong>interfaces</strong>. Technically, not all interfaces are graphical nor user-oriented; but, given the context of this
-book, we will use all of these terms interchangeably.</p>
+<p>注意：在本书中，我们将图形用户界面称为 <strong>GUI</strong>、<strong>UI</strong>、<strong>用户界面</strong>或简称<strong>界面</strong>。从技术上讲，并非所有界面都是图形化的或面向用户的；但是，考虑到本书的上下文，我们将交替使用所有这些术语。</p>
 </blockquote>
-<h2 id="dissecting-an-interface"><a class="header" href="#dissecting-an-interface">Dissecting an Interface</a></h2>
-<p>Since we are interested in creating user interfaces, let’s take a closer look at them. We will start with a very
-simple one: the classical counter interface. What is it made of?</p>
+<h2 id="剖析界面"><a class="header" href="#剖析界面">剖析界面</a></h2>
+<p>由于我们有兴趣创建用户界面，让我们仔细看看它们。我们将从一个非常简单的开始：经典的计数器界面。它由什么组成？</p>
 <div align="center">
-  <img alt="A classical counter interface" src="resources/counter-interface.svg">
+  <img alt="经典计数器界面" src="../resources/counter-interface.svg">
 </div>
-<p>As we can clearly see, this interface has three visibly distinct elements: two buttons with a number in between.
-We refer to these visibly distinct elements of a user interface as <strong>widgets</strong> or <strong>elements</strong>.</p>
-<p>Some <strong>widgets</strong> may be interactive, like a button. In the counter interface, the buttons can be used to trigger
-certain <strong>interactions</strong>. Specifically, the button at the top can be used to increment the counter value, while the
-button at the bottom can be used to decrement it.</p>
-<p>We can also say that user interfaces are <em>stateful</em>—there is some <strong>state</strong> that persists between interactions.
-The counter interface displays a number representing the counter value. The number displayed will change depending on
-the amount of times we press the buttons. Pressing the increment button once will result in a different displayed value
-compared to pressing it twice.</p>
+<p>正如我们可以清楚地看到的，这个界面有三个视觉上不同的元素：两个按钮中间有一个数字。我们将用户界面的这些视觉上不同的元素称为<strong>组件</strong>或<strong>元素</strong>。</p>
+<p>一些<strong>组件</strong>可能是交互式的，比如按钮。在计数器界面中，按钮可以用来触发某些<strong>交互</strong>。具体来说，顶部的按钮可以用来增加计数器值，而底部的按钮可以用来减少它。</p>
+<p>我们也可以说用户界面是<em>有状态的</em>——有一些<strong>状态</strong>在交互之间持续存在。计数器界面显示一个表示计数器值的数字。显示的数字将根据我们按按钮的次数而改变。按一次增加按钮将导致与按两次不同的显示值。</p>
 <div align="center">
-  <img alt="A dissected counter interface" src="resources/counter-interface-annotated.svg">
+  <img alt="剖析的计数器界面" src="../resources/counter-interface-annotated.svg">
 </div>
-<h2 id="the-gui-trinity"><a class="header" href="#the-gui-trinity">The GUI Trinity</a></h2>
-<p>Our quick dissection has successfully identified three foundational ideas in a user interface:</p>
+<h2 id="gui-三要素"><a class="header" href="#gui-三要素">GUI 三要素</a></h2>
+<p>我们的快速剖析成功识别了用户界面中的三个基本思想：</p>
 <ul>
-<li><strong>Widgets</strong> — the distinct visual elements of an interface.</li>
-<li><strong>Interactions</strong> — the actions that may be triggered by some widgets.</li>
-<li><strong>State</strong> — the underlying condition or information of an interface.</li>
+<li><strong>组件</strong> — 界面的不同视觉元素。</li>
+<li><strong>交互</strong> — 可能由某些组件触发的动作。</li>
+<li><strong>状态</strong> — 界面的底层条件或信息。</li>
 </ul>
-<p>These ideas are connected to each other, forming another feedback loop!</p>
-<p><strong>Widgets</strong> produce <strong>interactions</strong> when a user interacts with them. These <strong>interactions</strong> then change the <strong>state</strong>
-of the interface. The changed <strong>state</strong> propagates and dictates the new <strong>widgets</strong> that must be displayed. These new
-<strong>widgets</strong> may then produce new <strong>interactions</strong>, which can change the <strong>state</strong> again… And so on.</p>
+<p>这些思想相互连接，形成另一个反馈循环！</p>
+<p><strong>组件</strong>在用户与它们交互时产生<strong>交互</strong>。这些<strong>交互</strong>然后改变界面的<strong>状态</strong>。改变的<strong>状态</strong>传播并决定必须显示的新<strong>组件</strong>。这些新<strong>组件</strong>然后可能产生新的<strong>交互</strong>，这可以再次改变<strong>状态</strong>…等等。</p>
 <div align="center">
-  <img alt="The GUI trinity" src="resources/the-gui-trinity.svg">
+  <img alt="GUI 三要素" src="../resources/the-gui-trinity.svg">
 </div>
-<p>These ideas and their connections make up the fundamental architecture of a user interface. Therefore, creating a user
-interface must inevitably consist in defining these <strong>widgets</strong>, <strong>interactions</strong>, and <strong>state</strong>; as well as the connections
-between them.</p>
-<h2 id="different-ideas-different-nature"><a class="header" href="#different-ideas-different-nature">Different Ideas, Different Nature</a></h2>
-<p>The three foundational ideas of an interface differ quite a bit when it comes to reusability.</p>
-<p>The state and the interactions of an interface are very specific to the application and its purpose. If I tell you that
-I have an interface with a numeric value and increment and decrement interactions, you will very easily
-guess I am talking about a counter interface.</p>
-<p>However, if I tell you I have an interface with two buttons and a number… It’s quite trickier for you to guess the kind
-of interface I am talking about. It could be anything!</p>
-<p>This is because widgets are generally very generic and, therefore, more reusable. Most interfaces display a combination of
-familiar widgets—like buttons and numbers. In fact, users expect familiar widgets to always behave a certain way. If they
-don’t behave properly, the interface will be unintuitive and have poor <a href="https://en.wikipedia.org/wiki/User_experience">user experience</a>.</p>
-<p>While widgets are generally very reusable; the specific widget configuration dictated by the application state and its
-interactions is very application-specific. A button is generic; but a button that has a “+” label and causes a value
-increment when pressed is very specific.</p>
-<p>All of this means that, when we are creating a specific user interface, we don’t want to focus on implementing every
-familiar widget and its behavior. Instead, we want to leverage widgets as reusable building blocks—independent of our
-application and provided by some library—while placing our focus on the application-specific parts of the fundamental
-architecture: state, interactions, how the interactions change the state, and how the state dictates the widgets.</p>
+<p>这些思想及其连接构成了用户界面的基本架构。因此，创建用户界面必然包括定义这些<strong>组件</strong>、<strong>交互</strong>和<strong>状态</strong>；以及它们之间的连接。</p>
+<h2 id="不同的思想不同的性质"><a class="header" href="#不同的思想不同的性质">不同的思想，不同的性质</a></h2>
+<p>界面的三个基本思想在可重用性方面差异很大。</p>
+<p>界面的状态和交互对应用程序及其目的非常特定。如果我告诉您我有一个具有数值和增加和减少交互的界面，您很容易猜到我在谈论计数器界面。</p>
+<p>然而，如果我告诉您我有一个具有两个按钮和一个数字的界面…您猜测我在谈论什么样的界面就相当困难了。它可能是任何东西！</p>
+<p>这是因为组件通常非常通用，因此更可重用。大多数界面显示熟悉组件的组合——比如按钮和数字。事实上，用户期望熟悉的组件总是以某种方式行为。如果它们行为不当，界面将不直观并具有糟糕的<a href="https://en.wikipedia.org/wiki/User_experience">用户体验</a>。</p>
+<p>虽然组件通常非常可重用；但由应用程序状态及其交互决定的特定组件配置是非常特定于应用程序的。按钮是通用的；但具有“+“标签并在按下时导致值增加的按钮是非常特定的。</p>
+<p>所有这些意味着，当我们创建特定的用户界面时，我们不想专注于实现每个熟悉的组件及其行为。相反，我们想要利用组件作为可重用的构建块——独立于我们的应用程序并由某个库提供——同时将我们的重点放在基本架构的应用程序特定部分：状态、交互、交互如何改变状态，以及状态如何决定组件。</p>
 <div align="center">
-  <img alt="The application-specific parts of a GUI" src="resources/the-gui-trinity-focused.svg">
+  <img alt="GUI 的应用程序特定部分" src="../resources/the-gui-trinity-focused.svg">
 </div>
-<h2 id="the-elm-architecture"><a class="header" href="#the-elm-architecture">The Elm Architecture</a></h2>
-<p>It turns out that the four application-specific parts of the architecture of an interface are also the four foundational
-ideas of <a href="https://guide.elm-lang.org/architecture/">The Elm Architecture</a>.</p>
+<h2 id="elm-架构"><a class="header" href="#elm-架构">Elm 架构</a></h2>
+<p>事实证明，界面架构的四个应用程序特定部分也是<a href="https://guide.elm-lang.org/architecture/">Elm 架构</a>的四个基本思想。</p>
 <blockquote>
-<p>The Elm Architecture is a pattern for architecting interactive programs that emerges naturally in <a href="https://elm-lang.org/">Elm</a>, a delightful
-purely functional programming language for reliable web applications.</p>
-<p>Patterns and ideas that emerge in purely functional programming languages tend to work very well in Rust
-because they leverage immutability and <a href="https://en.wikipedia.org/wiki/Referential_transparency">referential transparency</a>—both very desirable properties that not only
-make code easy to reason about, but also play nicely with the borrow checker.</p>
-<p>Furthermore, The Elm Architecture not only emerges naturally in Elm, but also when simply dissecting user
-interfaces and formalizing their inner workings; like we just did in this chapter.</p>
+<p>Elm 架构是一种用于构建交互式程序的模式，它在 <a href="https://elm-lang.org/">Elm</a> 中自然出现，Elm 是一种用于可靠 Web 应用程序的令人愉悦的纯函数式编程语言。</p>
+<p>在纯函数式编程语言中出现的模式和思想在 Rust 中往往工作得很好，因为它们利用了不可变性和<a href="https://en.wikipedia.org/wiki/Referential_transparency">引用透明性</a>——这两个非常理想的属性不仅使代码易于推理，而且与借用检查器配合得很好。</p>
+<p>此外，Elm 架构不仅在 Elm 中自然出现，而且在简单地剖析用户界面并形式化其内部工作时也会出现；就像我们刚才在本章中所做的那样。</p>
 </blockquote>
-<p>The Elm Architecture uses a different—if not more precise—nomenclature for its fundamental parts:</p>
+<p>Elm 架构为其基本部分使用不同的——如果不是更精确的——命名法：</p>
 <ul>
-<li><strong>Model</strong> — the state of the application.</li>
-<li><strong>Messages</strong> — the interactions of the application.</li>
-<li><strong>Update logic</strong> — how the messages change the state.</li>
-<li><strong>View logic</strong> — how the state dictates the widgets.</li>
+<li><strong>模型</strong> — 应用程序的状态。</li>
+<li><strong>消息</strong> — 应用程序的交互。</li>
+<li><strong>更新逻辑</strong> — 消息如何改变状态。</li>
+<li><strong>视图逻辑</strong> — 状态如何决定组件。</li>
 </ul>
-<p>These are different names, but they point to the same exact fundamental ideas we have already discovered and,
-therefore, can be used interchangeably.</p>
+<p>这些是不同的名称，但它们指向我们已经发现的完全相同的基本思想，因此可以互换使用。</p>
 <div align="center">
-  <img alt="The Elm Architecture" src="resources/the-elm-architecture.svg">
+  <img alt="Elm 架构" src="../resources/the-elm-architecture.svg">
 </div>
 <blockquote>
-<p>Note: In iced, the names <strong>state</strong> and <strong>messages</strong> are used more often than <strong>model</strong> and
-<strong>interactions</strong>, respectively.</p>
+<p>注意：在 iced 中，<strong>状态</strong>和<strong>消息</strong>这些名称比<strong>模型</strong>和<strong>交互</strong>使用得更频繁。</p>
 </blockquote>
 
                     </main>

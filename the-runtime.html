@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>The Runtime - Iced 中文教程 — Rust跨平台GUI库</title>
+        <title>运行时 - Iced 中文教程 — Rust跨平台GUI库</title>
 
 
         <!-- Custom HTML head -->
@@ -142,7 +142,7 @@
                         <a href="https://github.com/Xiao-VoV/Iced_book_Chinese_pub" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/Xiao-VoV/Iced_book_Chinese_pub/edit/master/src/the-runtime.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Xiao-VoV/Iced_book_Chinese_pub/edit/master/src/Chinese/the-runtime.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -171,27 +171,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="the-runtime"><a class="header" href="#the-runtime">The Runtime</a></h1>
-<p>In the previous chapter we built the classical counter interface using iced and The Elm Architecture. We focused on each
-fundamental part—one at a time: <strong>state</strong>, <strong>messages</strong>, <strong>update logic</strong>, and <strong>view logic</strong>.</p>
-<p>But now what? Yes, we have all the fundamental parts of a user interface—as we learned during
-<a href="architecture.html">our dissection</a>—but it is unclear how we are supposed to bring it to life.</p>
-<p>It seems we are missing <em>something</em> that can put all the parts together and <em>run</em> them in unison. <em>Something</em> that
-creates and runs the fundamental loop of a user interface—displaying widgets to a user and reacting to any interactions.</p>
-<p>This <em>something</em> is called the <strong>runtime</strong>. You can think of it as the environment where the feedback loop of a user
-interface takes place. The runtime is in charge of every part of the loop: initializing the <strong>state</strong>,
-producing <strong>messages</strong>, executing the <strong>update logic</strong>, and running our <strong>view logic</strong>.</p>
+                        <h1 id="运行时"><a class="header" href="#运行时">运行时</a></h1>
+<p>在上一章中，我们使用 iced 和 Elm 架构构建了经典的计数器界面。我们专注于每个
+基本部分——一次一个：<strong>状态</strong>、<strong>消息</strong>、<strong>更新逻辑</strong>和<strong>视图逻辑</strong>。</p>
+<p>但现在怎么办？是的，我们有用户界面的所有基本部分——正如我们在
+<a href="architecture.html">剖析过程中</a>学到的——但不清楚我们应该如何让它活起来。</p>
+<p>看起来我们缺少_某些东西_，可以将所有部分组合在一起并让它们协调_运行_。_某些东西_可以
+创建并运行用户界面的基本循环——向用户显示组件并对任何交互做出反应。</p>
+<p>这个_某些东西_被称为<strong>运行时</strong>。您可以将其视为用户界面反馈循环发生的环境。运行时负责循环的每个部分：初始化<strong>状态</strong>、
+产生<strong>消息</strong>、执行<strong>更新逻辑</strong>和运行我们的<strong>视图逻辑</strong>。</p>
 <div align="center">
-  <img alt="The Runtime" src="resources/the-runtime.svg">
+  <img alt="运行时" src="../resources/the-runtime.svg">
 </div>
 <blockquote>
-<p>Another way to picture the runtime is by imagining a huge engine with four fundamental parts missing. Our job is
-to fill in these parts—and then the engine can run!</p>
+<p>想象运行时的另一种方式是想象一个缺少四个基本部分的巨大引擎。我们的工作是
+填补这些部分——然后引擎就可以运行了！</p>
 </blockquote>
-<h2 id="a-magical-runtime"><a class="header" href="#a-magical-runtime">A Magical Runtime</a></h2>
-<p>Let’s try to get a better understanding of the lifetime of an interface by exploring the internals of a basic (although very magical!) runtime.</p>
-<p>In fact, we have actually started writing a runtime already! When <a href="first-steps.html#update-logic">we implemented the update logic of our counter</a>,
-we wrote a very small test that simulated a user:</p>
+<h2 id="神奇的运行时"><a class="header" href="#神奇的运行时">神奇的运行时</a></h2>
+<p>让我们通过探索基本（虽然非常神奇！）运行时的内部来更好地理解界面的生命周期。</p>
+<p>事实上，我们实际上已经开始编写运行时了！当<a href="first-steps.html#update-logic">我们实现计数器的更新逻辑</a>时，
+我们编写了一个模拟用户的非常小的测试：</p>
 <pre><code class="language-rust ignore">#[test]
 fn it_counts_properly() {
     let mut counter = Counter { value: 0 };
@@ -202,130 +201,128 @@ fn it_counts_properly() {
 
     assert_eq!(counter.value, 1);
 }</code></pre>
-<p>This is technically a very bare-bones runtime. It initializes the <strong>state</strong>, produces some <strong>interactions</strong>,
-and executes the <strong>update logic</strong>.</p>
-<p>Of course, the interactions are made up, it is very short-lived, and there is no <strong>view logic</strong>
-involved—far from what we actually want. Still, it’s a great start! Let’s try to extend it, step by step.</p>
-<h3 id="initializing-the-state"><a class="header" href="#initializing-the-state">Initializing the State</a></h3>
-<p>Our small runtime is already initializing the application state properly:</p>
-<pre><code class="language-rust ignore">// Initialize the state
+<p>从技术上讲，这是一个非常基础的运行时。它初始化<strong>状态</strong>，产生一些<strong>交互</strong>，
+并执行<strong>更新逻辑</strong>。</p>
+<p>当然，交互是编造的，它非常短暂，并且没有涉及<strong>视图逻辑</strong>
+——远非我们实际想要的。尽管如此，这是一个很好的开始！让我们尝试逐步扩展它。</p>
+<h3 id="初始化状态"><a class="header" href="#初始化状态">初始化状态</a></h3>
+<p>我们的小运行时已经正确初始化了应用程序状态：</p>
+<pre><code class="language-rust ignore">// 初始化状态
 let mut counter = Counter { value: 0 };</code></pre>
-<p>However, we can avoid hardcoding the initial state by leveraging the <code>Default</code> trait. Let’s just derive it:</p>
+<p>但是，我们可以通过利用 <code>Default</code> 特征来避免硬编码初始状态。让我们派生它：</p>
 <pre><code class="language-rust">#[derive(Default)]
 struct Counter {
     value: i64
 }</code></pre>
-<p>And then, we simply use <code>Counter::default</code> in our runtime:</p>
-<pre><code class="language-rust ignore">// Initialize the state
+<p>然后，我们在运行时中简单地使用 <code>Counter::default</code>：</p>
+<pre><code class="language-rust ignore">// 初始化状态
 let mut counter = Counter::default();</code></pre>
-<p>The difference may be subtle, but we are separating concerns—we keep the initial state of our application close to
-the state definition and separated from the runtime. This way, we may eventually be able to make our runtime work with
-<em>any</em> application!</p>
-<h3 id="displaying-the-interface"><a class="header" href="#displaying-the-interface">Displaying the Interface</a></h3>
-<p>Alright! We have our <strong>state</strong> initialized. What’s next? Well, before a user can <strong>interact</strong> with our interface, we
-need to <strong>display</strong> it to them.</p>
-<p>That’s easy! We just need to open a window in whatever OS the user is running, initialize a proper graphics backend,
-and then render the widgets returned by our <strong>view logic</strong>—properly laid out, of course!</p>
-<p>What? You have no clue of how to do that? Don’t worry, I have this magical function: <code>display</code>. It takes a reference to
-any interface and displays it to the user. It totally works!</p>
+<p>差异可能很微妙，但我们正在分离关注点——我们将应用程序的初始状态保持在
+状态定义附近，并与运行时分离。这样，我们最终可能能够让我们的运行时与
+_任何_应用程序一起工作！</p>
+<h3 id="显示界面"><a class="header" href="#显示界面">显示界面</a></h3>
+<p>好的！我们已经初始化了<strong>状态</strong>。接下来是什么？嗯，在用户可以与我们的界面<strong>交互</strong>之前，我们
+需要向他们<strong>显示</strong>它。</p>
+<p>这很容易！我们只需要在用户运行的任何操作系统中打开一个窗口，初始化适当的图形后端，
+然后渲染我们<strong>视图逻辑</strong>返回的组件——当然要正确布局！</p>
+<p>什么？您不知道如何做到这一点？别担心，我有这个神奇的函数：<code>display</code>。它接受任何界面的引用并将其显示给用户。它完全有效！</p>
 <pre><code class="language-rust ignore">use magic::display;
 
-<span class="boring">// Initialize the state
+<span class="boring">// 初始化状态
 </span><span class="boring">let mut counter = Counter::default();
 </span><span class="boring">
-</span>// Run our view logic to obtain our interface
+</span>// 运行我们的视图逻辑以获得我们的界面
 let interface = counter.view();
 
-// Display the interface to the user
+// 向用户显示界面
 display(&amp;interface);</code></pre>
-<p>See? Easy! Jokes aside, the purpose of this chapter is not for us to learn graphics programming; but for us
-to get a better understanding of how a runtime works. A little bit of magic doesn’t hurt!</p>
-<h3 id="gathering-the-interactions"><a class="header" href="#gathering-the-interactions">Gathering the Interactions</a></h3>
-<p>The user is seeing our interface and is now interacting with it. We need to pay very good attention to all
-the interactions and produce all the relevant <strong>messages</strong> that our widgets specify.</p>
-<p>How? With some more magic, of course! I just found this <code>interact</code> function inside of my top hat—it takes an
-interface and produces the <strong>messages</strong> that correspond to the latest interactions of the user.</p>
+<p>看？简单！玩笑归玩笑，本章的目的不是让我们学习图形编程；而是让我们
+更好地理解运行时是如何工作的。一点魔法不会有害！</p>
+<h3 id="收集交互"><a class="header" href="#收集交互">收集交互</a></h3>
+<p>用户正在看我们的界面并与之交互。我们需要非常注意所有
+交互并产生我们的组件指定的所有相关<strong>消息</strong>。</p>
+<p>如何？当然是用更多的魔法！我刚刚在我的礼帽里找到了这个 <code>interact</code> 函数——它接受一个
+界面并产生对应于用户最新交互的<strong>消息</strong>。</p>
 <pre><code class="language-rust ignore">use magic::{display, interact};
 
-<span class="boring">// Initialize the state
+<span class="boring">// 初始化状态
 </span><span class="boring">let mut counter = Counter::default();
 </span><span class="boring">
-</span><span class="boring">// Run our view logic to obtain our interface
+</span><span class="boring">// 运行我们的视图逻辑以获得我们的界面
 </span><span class="boring">let interface = counter.view();
 </span><span class="boring">
-</span><span class="boring">// Display the interface to the user
+</span><span class="boring">// 向用户显示界面
 </span><span class="boring">display(&amp;interface);
 </span><span class="boring">
-</span>// Process the user interactions and obtain our messages
+</span>// 处理用户交互并获得我们的消息
 let messages = interact(&amp;interface);</code></pre>
-<p>Great! <code>interact</code> returns a list of <strong>messages</strong> for us—ready to be iterated.</p>
-<h3 id="reacting-to-the-interactions"><a class="header" href="#reacting-to-the-interactions">Reacting to the Interactions</a></h3>
-<p>At this point, we have gathered the user interactions and we have turned them into a bunch of <strong>messages</strong>. In order to
-react properly to the user, we need to update our <strong>state</strong> accordingly for each message.</p>
-<p>Luckily, there are no more magic tricks involved in this step—we can just use our <strong>update logic</strong>:</p>
+<p>太好了！<code>interact</code> 为我们返回一个<strong>消息</strong>列表——准备好被迭代。</p>
+<h3 id="对交互做出反应"><a class="header" href="#对交互做出反应">对交互做出反应</a></h3>
+<p>此时，我们已经收集了用户交互并将它们转换为一堆<strong>消息</strong>。为了
+正确地对用户做出反应，我们需要为每个消息相应地更新我们的<strong>状态</strong>。</p>
+<p>幸运的是，这一步不涉及更多的魔法技巧——我们可以只使用我们的<strong>更新逻辑</strong>：</p>
 <pre><code class="language-rust ignore"><span class="boring">use magic::{display, interact};
 </span><span class="boring">
-</span><span class="boring">// Initialize the state
+</span><span class="boring">// 初始化状态
 </span><span class="boring">let mut counter = Counter::default();
 </span><span class="boring">
-</span><span class="boring">// Run our view logic to obtain our interface
+</span><span class="boring">// 运行我们的视图逻辑以获得我们的界面
 </span><span class="boring">let interface = counter.view();
 </span><span class="boring">
-</span><span class="boring">// Display the interface to the user
+</span><span class="boring">// 向用户显示界面
 </span><span class="boring">display(&amp;interface);
 </span><span class="boring">
-</span><span class="boring">// Process the user interactions and obtain our messages
+</span><span class="boring">// 处理用户交互并获得我们的消息
 </span><span class="boring">let messages = interact(&amp;interface);
 </span><span class="boring">
-</span>// Update our state by processing each message
+</span>// 通过处理每个消息来更新我们的状态
 for message in messages {
     counter.update(message);
 }</code></pre>
-<p>That should keep our state completely up-to-date with the latest user interactions.</p>
-<h3 id="looping-around"><a class="header" href="#looping-around">Looping Around</a></h3>
-<p>Okay! Our state has been updated to reflect the user interactions. Now, we need to display the resulting interface again
-to the user. And after that, we must process any further interactions… And then, update our state once more.
-And then… Do it all over once again!</p>
-<p>This is a loop! And no, loops aren’t very magical—not when we write Rust, at least:</p>
+<p>这应该让我们的状态与最新的用户交互完全保持同步。</p>
+<h3 id="循环"><a class="header" href="#循环">循环</a></h3>
+<p>好的！我们的状态已经更新以反映用户交互。现在，我们需要再次向用户显示结果界面。之后，我们必须处理任何进一步的交互…然后，再次更新我们的状态。
+然后…再次重复这一切！</p>
+<p>这是一个循环！不，循环并不是很神奇——至少当我们编写 Rust 时不是：</p>
 <pre><code class="language-rust ignore">use magic::{display, interact};
 
-// Initialize the state
+// 初始化状态
 let mut counter = Counter::default();
 
-// Be interactive. All the time! 
+// 保持交互。一直如此！
 loop {
-    // Run our view logic to obtain our interface
+    // 运行我们的视图逻辑以获得我们的界面
     let interface = counter.view();
 
-    // Display the interface to the user
+    // 向用户显示界面
     display(&amp;interface);
 
-    // Process the user interactions and obtain our messages
+    // 处理用户交互并获得我们的消息
     let messages = interact(&amp;interface);
 
-    // Update our state by processing each message
+    // 通过处理每个消息来更新我们的状态
     for message in messages {
         counter.update(message);
     }
 }</code></pre>
-<p>Congratulations! We just wrote a perfectly functional runtime—magical properties aside. We can clearly understand here how
-each fundamental part of The Elm Architecture fits in the lifetime of an application.</p>
-<p>Specifically,</p>
+<p>恭喜！我们刚刚编写了一个完全功能的运行时——除了神奇的属性。我们可以清楚地理解这里
+Elm 架构的每个基本部分如何适应应用程序的生命周期。</p>
+<p>具体来说，</p>
 <ul>
-<li><strong>state</strong> is initialized once,</li>
-<li><strong>view logic</strong> runs once at startup and then after every batch of interactions,</li>
-<li>and <strong>update logic</strong> runs for every interaction that created a <strong>message</strong>.</li>
+<li><strong>状态</strong>初始化一次，</li>
+<li><strong>视图逻辑</strong>在启动时运行一次，然后在每批交互后运行，</li>
+<li><strong>更新逻辑</strong>为每个创建<strong>消息</strong>的交互运行。</li>
 </ul>
-<h2 id="the-ice-wizard"><a class="header" href="#the-ice-wizard">The Ice Wizard</a></h2>
-<p>“That’s cool and all”, you say, “but I am not a wizard and I still have no clue of how to run the counter interface I wrote.
-I have things to count!”</p>
-<p>Fair enough! iced implements a very similar runtime to the one we just built. It comes bundled with
-its own magic<sup class="footnote-reference" id="fr-magic-1"><a href="#footnote-magic">1</a></sup>—so you don’t need to worry about learning the dark arts yourself.</p>
-<p>If we want to run our <code>Counter</code>, all we have to do is call <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a>:</p>
+<h2 id="冰雪法师"><a class="header" href="#冰雪法师">冰雪法师</a></h2>
+<p>“这很酷”，您说，“但我不是法师，我仍然不知道如何运行我编写的计数器界面。
+我有东西要计算！”</p>
+<p>很公平！iced 实现了一个与我们刚刚构建的非常相似的运行时。它自带
+自己的魔法<sup class="footnote-reference" id="fr-magic-1"><a href="#footnote-magic">1</a></sup>——所以您不需要担心自己学习黑暗艺术。</p>
+<p>如果我们想要运行我们的 <code>Counter</code>，我们所要做的就是调用 <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a>：</p>
 <pre><code class="language-rust ignore iced(height=100px)"><span class="boring">use iced::widget::{button, column, text, Column};
 </span><span class="boring">
 </span>pub fn main() -&gt; iced::Result {
-    iced::run("A cool counter", Counter::update, Counter::view)
+    iced::run("一个酷炫的计数器", Counter::update, Counter::view)
 }
 <span class="boring">
 </span><span class="boring">#[derive(Default)]
@@ -399,38 +396,38 @@ function embed(script, hash, height) {
 }
 </script>
 <script type="module" id="iceberg-0">
-  embed(document.getElementById("iceberg-0"), "55288b479ffed7c5afc0902c91faa1812555df2c747f4c091f1e2dca985faa", "100px");
+  embed(document.getElementById("iceberg-0"), "199762893a5dd38e37491945836672c9a857a6c4c84635486a685f9ad9997", "100px");
 </script>
-<p>We just give our application a <em>cool</em> title and then provide the <strong>update logic</strong> and <strong>view logic</strong> to
-the <strong>runtime</strong>—which then figures out the rest!</p>
-<p>The runtime is capable of inferring the types for the <strong>state</strong> and <strong>messages</strong> out of the type signatures of
-our <strong>update logic</strong> and <strong>view logic</strong>. The <strong>state</strong> is initialized leveraging <code>Default</code>, as we described earlier.</p>
-<p>Notice also that <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a> can fail and, therefore, it returns an <a href="https://docs.iced.rs/iced/type.Result.html"><code>iced::Result</code></a>. If all we are doing is run the
-application, we can return this result directly in <code>main</code>.</p>
-<p>And that should be it! Have fun counting things for 300 million years—at least!</p>
+<p>我们只是给我们的应用程序一个_酷炫_的标题，然后向
+<strong>运行时</strong>提供<strong>更新逻辑</strong>和<strong>视图逻辑</strong>——然后它会处理其余的事情！</p>
+<p>运行时能够从我们<strong>更新逻辑</strong>和<strong>视图逻辑</strong>的类型签名中推断出
+<strong>状态</strong>和<strong>消息</strong>的类型。<strong>状态</strong>使用 <code>Default</code> 初始化，正如我们之前描述的。</p>
+<p>还要注意 <a href="https://docs.iced.rs/iced/fn.run.html"><code>run</code></a> 可能失败，因此它返回一个 <a href="https://docs.iced.rs/iced/type.Result.html"><code>iced::Result</code></a>。如果我们所做的只是运行
+应用程序，我们可以在 <code>main</code> 中直接返回这个结果。</p>
+<p>就是这样！享受计算东西的乐趣吧——至少 3 亿年！</p>
 <blockquote>
-<h4 id="note-from-the-author"><a class="header" href="#note-from-the-author">Note From the Author</a></h4>
-<p>You reached the end of the book, for now!</p>
-<p>I think it should already serve as a quick introduction to the basics of the library.
-There is a lot more to unravel—but hopefully you are now at a point where you can start
-playing around, having fun, and experimenting further.</p>
-<p>The book is far from finished—there are a lot more topics I want to cover here, namely:</p>
+<h4 id="作者的话"><a class="header" href="#作者的话">作者的话</a></h4>
+<p>您已经到达了本书的结尾，目前为止！</p>
+<p>我认为它应该已经作为库基础知识的快速介绍。
+还有很多东西需要揭示——但希望您现在已经到了可以开始
+玩耍、享受乐趣和进一步实验的地步。</p>
+<p>这本书远未完成——我想在这里涵盖更多主题，即：</p>
 <ul>
-<li>Layout</li>
-<li>Styling</li>
-<li>Concurrency</li>
-<li>Scaling Applications</li>
-<li>Extending the Runtime</li>
-<li>And More!</li>
+<li>布局</li>
+<li>样式</li>
+<li>并发</li>
+<li>扩展应用程序</li>
+<li>扩展运行时</li>
+<li>以及更多！</li>
 </ul>
-<p>Until I get to write them, check out the <a href="additional-resources.html">Additional Resources</a>
-chapter if you want to explore and learn further.</p>
-<p>I hope that you enjoyed the read so far. Stay tuned!</p>
+<p>在我写完它们之前，如果您想要探索和进一步学习，请查看<a href="additional-resources.html">其他资源</a>
+章节。</p>
+<p>我希望您到目前为止享受阅读。敬请期待！</p>
 <p>— Héctor</p>
 </blockquote>
 <hr>
 <ol class="footnote-definition"><li id="footnote-magic">
-<p>Mainly <a href="https://github.com/rust-windowing/winit"><code>winit</code></a>, <a href="https://github.com/rust-windowing/softbuffer"><code>softbuffer</code></a>, <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a>, <a href="https://github.com/RazrFalcon/tiny-skia"><code>tiny-skia</code></a>, and <a href="https://github.com/pop-os/cosmic-text"><code>cosmic-text</code></a>. <a href="#fr-magic-1">↩</a></p>
+<p>主要是 <a href="https://github.com/rust-windowing/winit"><code>winit</code></a>、<a href="https://github.com/rust-windowing/softbuffer"><code>softbuffer</code></a>、<a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a>、<a href="https://github.com/RazrFalcon/tiny-skia"><code>tiny-skia</code></a> 和 <a href="https://github.com/pop-os/cosmic-text"><code>cosmic-text</code></a>。 <a href="#fr-magic-1">↩</a></p>
 </li>
 </ol>
                     </main>
