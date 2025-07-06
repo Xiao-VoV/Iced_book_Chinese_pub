@@ -2,7 +2,7 @@
 authors = ["Xiao-VoV"]
 language = "zh"
 multilingual = false
-src = "src"
+src = "src/Chinese"
 title = "Iced 中文教程 — Rust跨平台GUI库"
 
 [output.html]
