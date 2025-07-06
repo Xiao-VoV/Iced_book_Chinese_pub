@@ -7,8 +7,8 @@ title = "iced — A Cross-Platform GUI Library for Rust"
 
 [output.html]
 mathjax-support = false
-git-repository-url = "https://github.com/iced-rs/book/tree/master"
-edit-url-template = "https://github.com/iced-rs/book/edit/master/{path}"
+git-repository-url = "https://github.com/Xiao-VoV/Iced_book_Chinese_pub/main"
+edit-url-template = "https://github.com/Xiao-VoV/Iced_book_Chinese_pub.git/edit/master/{path}"
 
 [output.html.playground]
 runnable = false
